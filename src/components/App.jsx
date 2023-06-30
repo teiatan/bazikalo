@@ -16,7 +16,6 @@ import {
 } from "../utils/variables";
 import { nanoid } from "nanoid";
 import { messagesArray } from "../samples/messagesArray";
-import "./App.css";
 
 function App() {
   const [user, setUser] = useState(

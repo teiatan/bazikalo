@@ -7,6 +7,7 @@ import {
   BsFillArrowRightCircleFill,
   BsFillArrowLeftCircleFill,
 } from "react-icons/bs";
+import { IoAccessibilitySharp } from "react-icons/io5";
 
 export const ActiveRooms = ({
   rooms = activeRooms,
@@ -77,6 +78,17 @@ export const ActiveRooms = ({
             </div>
           )}
         </button>
+
+        <button onClick={() => setOpenedModal("OnlineUsers")}>
+          {areActiveRoomsOpen ? (
+            "знайти користувача "
+          ) : (
+            <div className="flex justify-center items-center">
+              <IoAccessibilitySharp />
+            </div>
+          )}
+        </button>
+
         <button onClick={() => setOpenedModal("CreateNewRoom")}>
           {areActiveRoomsOpen ? "створити кімнату +" : "+"}
         </button>

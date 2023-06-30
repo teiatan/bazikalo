@@ -1,9 +1,9 @@
 import { ModalCover } from "./ModalCover";
 
-export const SettingsModal = () => {
-    return(
-        <ModalCover>
-            <div>SettingsModal</div>
-        </ModalCover>
-    )
-}
+export const SettingsModal = ({ onClose }) => {
+  return (
+    <ModalCover onClose={onClose}>
+      <div>SettingsModal</div>
+    </ModalCover>
+  );
+};

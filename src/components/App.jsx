@@ -59,7 +59,7 @@ function App() {
 
   return (
     <>
-      <Header userName={user.userName} />
+      <Header userName={user.userName} setOpenedModal={setOpenedModal} />
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div

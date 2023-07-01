@@ -1,8 +1,25 @@
+import PropTypes from "prop-types";
 import { DropDownField } from "../Common/DropDownField";
 import { DropDownItem } from "../Common/DropDownItem";
 import { nanoid } from "nanoid";
+import { useEffect } from "react";
 
-export const UserNameDropDownMenu = ({ setOpenedModal }) => {
+export const UserNameDropDownMenu = ({
+  setOpenedModal,
+  setIsDropDownMenuOpen,
+}) => {
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (e.target !== e.currentTarget) {
+        setIsDropDownMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [setIsDropDownMenuOpen]);
+
   return (
     <DropDownField>
       <DropDownItem
@@ -27,4 +44,10 @@ export const UserNameDropDownMenu = ({ setOpenedModal }) => {
       ></DropDownItem>
     </DropDownField>
   );
+};
+
+UserNameDropDownMenu.propTypes = {
+  setOpenedModal: PropTypes.func,
+  setIsDropDownMenuOpen: PropTypes.func,
+  isDropDownMenuOpen: PropTypes.bool,
 };

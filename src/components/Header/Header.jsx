@@ -35,7 +35,10 @@ export const Header = ({ user, setOpenedModal }) => {
 
           {isDropDownMenuOpen && (
             <div className="absolute top-[35px] right-0 min-w-[223px] rounded-[30px]">
-              <UserNameDropDownMenu setOpenedModal={handleDropdownMenuClick} />
+              <UserNameDropDownMenu
+                setOpenedModal={handleDropdownMenuClick}
+                setIsDropDownMenuOpen={setIsDropDownMenuOpen}
+              />
             </div>
           )}
         </div>

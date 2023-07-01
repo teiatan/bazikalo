@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { RoomDropDownMenu } from "../Common/RoomDropDownMenu";
 import { useState } from "react";
 
@@ -14,8 +15,18 @@ export const ToolBar = ({ roomName, type }) => {
         ...
       </button>
       <div className="absolute top-[50px] right-[25px]">
-        {isDropDownMenuOpen && <RoomDropDownMenu type={type} />}
+        {isDropDownMenuOpen && (
+          <RoomDropDownMenu
+            type={type}
+            closeDropDownMenu={() => setIsDropDownMenuOpen(false)}
+          />
+        )}
       </div>
     </div>
   );
+};
+
+ToolBar.propTypes = {
+  roomName: PropTypes.string,
+  type: PropTypes.string,
 };

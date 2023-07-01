@@ -2,14 +2,12 @@ import { useEffect } from "react";
 
 export const useAutoClosing = (closeFunction) => {
     useEffect(() => {
-        const handleClick = (e) => {
-          if (e.target !== e.currentTarget) {
+        const handleClick = () => {
             closeFunction();
-          }
         };
-        document.addEventListener("mousedown", handleClick);
+        document.addEventListener("mouseup", handleClick);
         return () => {
-          document.removeEventListener("mousedown", handleClick);
+          document.removeEventListener("mouseup", handleClick);
         };
       }, [closeFunction]);
 }

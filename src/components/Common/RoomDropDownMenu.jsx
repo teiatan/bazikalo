@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { DropDownField } from "./DropDownField";
 import { DropDownItem } from "./DropDownItem";
 import {
@@ -6,8 +7,10 @@ import {
   ImExit,
 } from "react-icons/im";
 import { nanoid } from "nanoid";
+import { useAutoClosing } from "../../hooks/useAutoclosing";
 
-export const RoomDropDownMenu = ({ type }) => {
+export const RoomDropDownMenu = ({ type, closeDropDownMenu }) => {
+  useAutoClosing(() => closeDropDownMenu(false));
   return (
     <DropDownField>
       <DropDownItem key={nanoid()} text={"Покинути кімнату"}>
@@ -25,4 +28,9 @@ export const RoomDropDownMenu = ({ type }) => {
       )}
     </DropDownField>
   );
+};
+
+RoomDropDownMenu.propTypes = {
+  type: PropTypes.string,
+  closeDropDownMenu: PropTypes.func,
 };

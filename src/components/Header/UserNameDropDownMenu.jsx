@@ -2,23 +2,13 @@ import PropTypes from "prop-types";
 import { DropDownField } from "../Common/DropDownField";
 import { DropDownItem } from "../Common/DropDownItem";
 import { nanoid } from "nanoid";
-import { useEffect } from "react";
+import { useAutoClosing } from "../../hooks/useAutoclosing";
 
 export const UserNameDropDownMenu = ({
   setOpenedModal,
   setIsDropDownMenuOpen,
 }) => {
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (e.target !== e.currentTarget) {
-        setIsDropDownMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [setIsDropDownMenuOpen]);
+  useAutoClosing(() => setIsDropDownMenuOpen(false));
 
   return (
     <DropDownField listStyles="border-none">

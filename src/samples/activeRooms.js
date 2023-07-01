@@ -9,7 +9,11 @@ export const activeRooms = [
             user2,
             'me'
         ],
-        type: 'group'
+        type: 'group',
+        colors: {
+            backgroud: '#ffffff',
+            text: '#000000'
+        }
     },
     {
         id: '111',
@@ -20,7 +24,11 @@ export const activeRooms = [
             user4,
             'me'
         ],
-        type: 'group'
+        type: 'group',
+        colors: {
+            backgroud: '#ffffff',
+            text: '#000000'
+        }
     },
     {
         id: '222',
@@ -29,6 +37,10 @@ export const activeRooms = [
             user1,
             'me'
         ],
-        type: '1x1'
+        type: '1x1',
+        colors: {
+            backgroud: '#ffffff',
+            text: '#000000'
+        }
     }
 ];

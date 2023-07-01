@@ -19,7 +19,15 @@ import { messagesArray } from "../samples/messagesArray";
 
 function App() {
   const [user, setUser] = useState(
-    () => JSON.parse(localStorage.getItem("user")) ?? { userName: "", id: "" }
+    () =>
+      JSON.parse(localStorage.getItem("user")) ?? {
+        userName: "",
+        id: "",
+        colors: {
+          background: "#ffffff",
+          text: "#000000",
+        },
+      }
   );
   const [messages, setMessages] = useState([...messagesArray]);
   const [currentRoom, setCurrentRoom] = useState({
@@ -59,7 +67,7 @@ function App() {
 
   return (
     <>
-      <Header userName={user.userName} setOpenedModal={setOpenedModal} />
+      <Header user={user} setOpenedModal={setOpenedModal} />
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
@@ -124,7 +132,9 @@ function App() {
         {openedModal === "OnlineUsers" && (
           <OnlineUsersModal onClose={closeModal} />
         )}
-        {openedModal === "Settings" && <SettingsModal onClose={closeModal} />}
+        {openedModal === "Settings" && (
+          <SettingsModal onClose={closeModal} user={user} setUser={setUser} />
+        )}
         {openedModal === "Rules" && (
           <RulesModal
             onClose={closeModal}

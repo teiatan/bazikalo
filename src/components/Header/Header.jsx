@@ -1,7 +1,8 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { UserNameDropDownMenu } from "./UserNameDropDownMenu";
 
-export const Header = ({ userName, setOpenedModal }) => {
+export const Header = ({ user, setOpenedModal }) => {
   const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
 
   const handleDropdownMenuClick = (modalName) => {
@@ -17,14 +18,18 @@ export const Header = ({ userName, setOpenedModal }) => {
         <div className="mr-[100px] flex gap-[30px] relative">
           <button className="rounded-full bg-white p-2">Theme button</button>
 
-          {userName === "" ? (
+          {user.userName === "" ? (
             <button className="min-w-[223px]">UA/ENG</button>
           ) : (
             <button
               onClick={() => setIsDropDownMenuOpen(!isDropDownMenuOpen)}
               className="rounded-full bg-white p-2 min-w-[223px]"
+              style={{
+                color: user.colors.text,
+                backgroundColor: user.colors.background,
+              }}
             >
-              {userName}
+              {user.userName}
             </button>
           )}
 
@@ -37,4 +42,9 @@ export const Header = ({ userName, setOpenedModal }) => {
       </div>
     </div>
   );
+};
+
+Header.propTypes = {
+  user: PropTypes.object,
+  setOpenedModal: PropTypes.func,
 };

@@ -26,6 +26,7 @@ export const SettingsModal = ({ onClose, user, setUser }) => {
     e.preventDefault;
     const newUser = {
       ...user,
+      userName: userName,
       colors: { background: backgroundColor, text: textColor },
     };
     setUser(newUser);

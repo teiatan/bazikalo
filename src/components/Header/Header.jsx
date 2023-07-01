@@ -34,7 +34,17 @@ export const Header = ({ user, setOpenedModal }) => {
           )}
 
           {isDropDownMenuOpen && (
-            <div className="absolute top-[35px] right-0 min-w-[223px] rounded-[30px]">
+            <div className="absolute top-[0px] right-0 min-w-[223px]  bg-white border rounded-[25px] overflow-hidden">
+              <button
+                onClick={() => setIsDropDownMenuOpen(!isDropDownMenuOpen)}
+                className="p-2 min-w-[223px]"
+                style={{
+                  color: user.colors.text,
+                  backgroundColor: user.colors.background,
+                }}
+              >
+                {user.userName}
+              </button>
               <UserNameDropDownMenu
                 setOpenedModal={handleDropdownMenuClick}
                 setIsDropDownMenuOpen={setIsDropDownMenuOpen}

@@ -21,7 +21,7 @@ export const UserNameDropDownMenu = ({
   }, [setIsDropDownMenuOpen]);
 
   return (
-    <DropDownField>
+    <DropDownField listStyles="border-none">
       <DropDownItem
         key={nanoid()}
         text={"Налаштування"}

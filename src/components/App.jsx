@@ -7,7 +7,7 @@ import { OnlineUsersModal } from "./Modals/OnlineUsersModal";
 import { SettingsModal } from "./Modals/SettingsModal";
 import { MessageInput } from "./MessageInput/MessageInput";
 import { ToolBar } from "./ToolBar/Toolbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RulesModal } from "./Modals/RulesModal";
 import { Header } from "./Header/Header";
 import {
@@ -16,12 +16,9 @@ import {
 } from "../utils/variables";
 import { nanoid } from "nanoid";
 import { messagesArray } from "../samples/messagesArray";
-import axios from "axios";
+// import { io } from "socket.io-client";
 
 function App() {
-  axios.defaults.baseURL =
-    /* "http://localhost:4000/" */ "https://bazikalo-backend.vercel.app/";
-  axios.defaults.withCredentials = true;
   const [user, setUser] = useState(
     () =>
       JSON.parse(localStorage.getItem("user")) ?? {
@@ -44,6 +41,21 @@ function App() {
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
+  const [ws, setWs] = useState();
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:4000/");
+    setWs(ws);
+    ws.addEventListener("message", handleMessage);
+
+    function handleMessage(e) {
+      console.log("new message", e);
+    }
+  }, []);
 
   // useEffect(()=>{
   // приймання нових повідомлень з бекенду

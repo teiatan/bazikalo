@@ -2,6 +2,7 @@ import { ModalCover } from "./ModalCover";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { ColorPicker } from "../Common/ColorPicker";
+import { updateUserSetting } from "../../api/ajaxRequests";
 
 export const SettingsModal = ({ onClose, user, setUser }) => {
   const [userName, setUserName] = useState(user.userName);
@@ -22,13 +23,14 @@ export const SettingsModal = ({ onClose, user, setUser }) => {
     setTextColor(e.target.value);
   };
 
-  const handleSaveChangings = (e) => {
+  const handleSaveChangings = async (e) => {
     e.preventDefault;
     const newUser = {
       ...user,
       userName: userName,
       colors: { background: backgroundColor, text: textColor },
     };
+    await updateUserSetting(newUser);
     setUser(newUser);
     onClose();
   };

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { ModalCover } from "./ModalCover";
-import axios from "axios";
+import { authenticate } from "../../api/ajaxRequests";
 
 export const AuthModal = ({ onClose, changeModal, setUser }) => {
   const [userName, setUserName] = useState("");
@@ -9,11 +9,8 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await axios.post("/auth", { userName });
-
-    localStorage.setItem("user", JSON.stringify(data));
+    const data = await authenticate(userName);
     setUser(data);
-
     onClose();
   };
 

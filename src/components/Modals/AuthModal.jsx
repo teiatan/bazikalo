@@ -1,43 +1,18 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { ModalCover } from "./ModalCover";
+import axios from "axios";
 
 export const AuthModal = ({ onClose, changeModal, setUser }) => {
   const [userName, setUserName] = useState("");
   const [areRulesAccepted, setAreRulesAccepted] = useState(false);
 
-  // записати айді користувача, який надав бекенд
-  // useEffect(()=> {
-  //     socket.on("connection", message => {
-  //         localStorage.setItem('user', {id:'message.id', userName});
-  //         setUser({id:'message.id', userName});
-  //     })
-  //   }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.post("/auth", { userName });
 
-  const handleSubmit = () => {
-    // видалити після підключення бекенду
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        id: "userId",
-        userName,
-        colors: {
-          background: "#ffffff",
-          text: "#000000",
-        },
-      })
-    );
-    setUser({
-      id: "userId",
-      userName,
-      colors: {
-        background: "#ffffff",
-        text: "#000000",
-      },
-    });
-
-    // передати на бек ім'я
-    // socket.emit("connection", userName);
+    localStorage.setItem("user", JSON.stringify(data));
+    setUser(data);
 
     onClose();
   };
@@ -52,7 +27,7 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
         onSubmit={handleSubmit}
         className="h-full flex flex-col justify-center items-center p-4 text-lg"
       >
-        <h2 className="text-3xl">Вітаємо у чаті "Базікало"!</h2>
+        <h2 className="text-3xl">Вітаємо у чаті Базікало!</h2>
 
         <label htmlFor="userName" className="text-center">
           Введіть своє ім’я чи нікнейм та спілкуйтесь без обмежень

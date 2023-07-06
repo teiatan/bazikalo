@@ -16,13 +16,17 @@ import {
 } from "../utils/variables";
 import { nanoid } from "nanoid";
 import { messagesArray } from "../samples/messagesArray";
+import axios from "axios";
 
 function App() {
+  axios.defaults.baseURL =
+    "http://localhost:4000/" /* "https://bazikalo-backend.vercel.app/" */;
+  axios.defaults.withCredentials = true;
   const [user, setUser] = useState(
     () =>
       JSON.parse(localStorage.getItem("user")) ?? {
         userName: "",
-        id: "",
+        _id: "",
         colors: {
           background: "#ffffff",
           text: "#000000",

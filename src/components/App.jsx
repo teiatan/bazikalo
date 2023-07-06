@@ -20,7 +20,7 @@ import axios from "axios";
 
 function App() {
   axios.defaults.baseURL =
-    "http://localhost:4000/" /* "https://bazikalo-backend.vercel.app/" */;
+    /* "http://localhost:4000/" */ "https://bazikalo-backend.vercel.app/";
   axios.defaults.withCredentials = true;
   const [user, setUser] = useState(
     () =>

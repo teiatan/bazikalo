@@ -4,7 +4,9 @@ import { AiOutlinePaperClip } from "react-icons/ai";
 import { BiSmile } from "react-icons/bi";
 import { BsSend } from "react-icons/bs";
 import { user1 } from "../../samples/users";
+import PropTypes from "prop-types";
 
+// eslint-disable-next-line react/display-name
 export const MessageInput = memo(({ addNewMessage }) => {
   const [message, setMessage] = useState("");
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
@@ -96,3 +98,7 @@ export const MessageInput = memo(({ addNewMessage }) => {
     </div>
   );
 });
+
+MessageInput.propTypes = {
+  addNewMessage: PropTypes.func,
+};

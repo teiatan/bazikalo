@@ -1,4 +1,5 @@
-const { socket } = require("./socket");
+import { socket } from "./socket";
+
 
 // авторизація - передача імені на бек після сабміту форми авторизації
 export const authOnBackend = (userName) => {

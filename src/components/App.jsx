@@ -16,7 +16,7 @@ import {
 } from "../utils/variables";
 import { nanoid } from "nanoid";
 import { messagesArray } from "../samples/messagesArray";
-// import { io } from "socket.io-client";
+import { socket } from "../api/socket";
 
 function App() {
   const [user, setUser] = useState(
@@ -41,21 +41,28 @@ function App() {
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
-  const [ws, setWs] = useState();
+  // const [ws, setWs] = useState();
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:4000/");
-    setWs(ws);
-    ws.addEventListener("message", handleMessage);
-
-    function handleMessage(e) {
-      console.log("new message", e);
-    }
+    socket.on("messages", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+      console.log(message);
+    });
   }, []);
+
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:4000");
+  //   setWs(ws);
+  //   ws.addEventListener("message", handleMessage);
+
+  //   function handleMessage(e) {
+  //     console.log(e.data);
+  //   }
+  // }, []);
 
   // useEffect(()=>{
   // приймання нових повідомлень з бекенду
@@ -76,9 +83,9 @@ function App() {
       createdAt: new Date().toISOString(),
       roomId: currentRoom.id,
     };
-    setMessages((prevMessages) => [...prevMessages, newMessageObject]);
+    // setMessages((prevMessages) => [...prevMessages, newMessageObject]);
     // відправка на бекенд
-    // socket.emit("message", newMessageObject);
+    socket.emit("messages", newMessageObject);
   };
 
   return (

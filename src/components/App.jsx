@@ -96,11 +96,10 @@ function App() {
         <div
           className={`
           p-4 border
-          ${
-            areActiveRoomsOpen
+          ${areActiveRoomsOpen
               ? `w-[${openAvtiveRoomsWidth}]`
               : `w-[${closedAvtiveRoomsWidth}]`
-          }
+            }
         `}
         >
           <ActiveRooms
@@ -118,11 +117,10 @@ function App() {
         <div
           className={`
           grid grid-rows-[80px_calc(100vh-80px-80px-160px)_160px] border
-          ${
-            areActiveRoomsOpen
+          ${areActiveRoomsOpen
               ? `w-[calc(100vw-345px)]`
               : `w-[calc(100vw-102px)]`
-          }
+            }
         `}
         >
           <ToolBar roomName={currentRoom.name} type={currentRoom.type} />
@@ -147,6 +145,7 @@ function App() {
             onClose={closeModal}
             allRooms={allRooms}
             setCurrentRoom={setCurrentRoom}
+            setOpenedModal={setOpenedModal}
           />
         )}
         {openedModal === "CreateNewRoom" && (

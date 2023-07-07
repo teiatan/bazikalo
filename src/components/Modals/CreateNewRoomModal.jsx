@@ -29,10 +29,20 @@ export const CreateNewRoomModal = ({ onClose }) => {
         setPasswordType('password');
     };
 
+    const shortenRoomName = (roomName) => {
+        if (roomName.length > 0) {
+            if (roomName.length === 1) {
+                return roomName.toLocaleUpperCase();
+            }
+            const shortenRoomName = roomName[0] + roomName.slice(-1);
+            return shortenRoomName.toLocaleUpperCase();
+        }
+    };
+
     return (
         <ModalCover onClose={onClose}>
-            <div className="flex flex-col gap-5 w-3/4">
-                <p className="text-center">Нова кімната</p>
+            <div className="flex flex-col gap-4 w-3/4">
+                <h3 className="text-center font-bold mb-2">Нова кімната</h3>
                 <input
                     type="text"
                     className="w-full px-4 py-2 border rounded"
@@ -62,26 +72,24 @@ export const CreateNewRoomModal = ({ onClose }) => {
                         <label htmlFor="private">Приватна</label>
                     </div>
                 </div>
-                {isPrivate && (
-                    <div className="relative">
-                        <p>Створіть ключ для приватної кімнати</p>
-                        <input
-                            type={passwordType}
-                            className="w-full px-4 py-2 border rounded"
-                        />
-                        <BsEyeSlash
-                            onClick={togglePassword}
-                            className="absolute bottom-8 right-2 cursor-pointer"
-                        />
-                        <p className="text-sm">
-                            *Після створення кімнати ключ змінити не можна
-                        </p>
-                    </div>
-                )}
+                <div className={`relative ${isPrivate ? 'visible' : 'invisible'}`}>
+                    <p>Створіть ключ для приватної кімнати</p>
+                    <input
+                        type={passwordType}
+                        className="w-full px-4 py-2 border rounded"
+                    />
+                    <BsEyeSlash
+                        onClick={togglePassword}
+                        className="absolute bottom-8 right-2 cursor-pointer"
+                    />
+                    <p className="text-sm">
+                        *Після створення кімнати ключ змінити не можна
+                    </p>
+                </div>
                 <p>Оберіть вид вашой кімнати</p>
                 <div className="flex justify-between">
                     <div className="flex flex-col">
-                        <div className="flex items-center gap-8">
+                        <div className="flex items-center justify-between gap-8">
                             <span>Колір фону</span>
                             <input
                                 type="color"
@@ -90,7 +98,7 @@ export const CreateNewRoomModal = ({ onClose }) => {
                                 onChange={handleBackgroundColorChange}
                             />
                         </div>
-                        <div className="flex items-center gap-8">
+                        <div className="flex items-center justify-between gap-8">
                             <span>Колір тексту</span>
                             <input
                                 type="color"
@@ -102,13 +110,13 @@ export const CreateNewRoomModal = ({ onClose }) => {
                     </div>
                     <div className="flex">
                         <span
-                            className="px-4 py-2 border rounded flex-grow min-w-[80px] font-bold"
+                            className="flex items-center justify-center px-4 py-2 border mr-5 rounded font-bold min-w-[80px]"
                             style={{
                                 color: textColor,
                                 backgroundColor: backgroundColor,
                             }}
                         >
-                            {roomName.toLocaleUpperCase()}
+                            {shortenRoomName(roomName)}
                         </span>
                     </div>
                 </div>

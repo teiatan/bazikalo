@@ -9,7 +9,7 @@ import { PiChatsCircleBold } from "react-icons/pi";
 import { AiOutlineStop } from "react-icons/ai";
 
 // Видалити, коли буде список с бєка та змінити key = id
-const usersOnline = ['Сергій12', 'Сергій11', 'Сергій13', 'Сергій14', 'Сергій15', 'Сергій16', 'Сергій17', 'Сергій18', 'Сергій19', 'Сергій20', 'Сергій21'];
+const usersOnline = ['A', 'Сергій12', 'Сергій11', 'Сергій13', 'Сергій14', 'Сергій15', 'Сергій16', 'Сергій17', 'Сергій18', 'Сергій19', 'Сергій20', 'Сергій21'];
 const blackList = ['Сергій12', 'Сергій11'];
 
 
@@ -35,8 +35,11 @@ export const OnlineUsersModal = memo(({ onClose }) => {
   };
 
   const shortenNickname = (nickname) => {
-    const shortenNickname = nickname[0] + nickname.slice(-1);
-    return shortenNickname.toLocaleUpperCase()
+    if (nickname.length === 1) {
+      return nickname.toLocaleUpperCase();
+    }
+    const shortenNickName = nickname[0] + nickname.slice(-1);
+    return shortenNickName.toLocaleUpperCase();
   };
 
   const handleDropDownMenuOpen = (index) => {

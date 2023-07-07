@@ -3,7 +3,6 @@ import Picker from "@emoji-mart/react";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { BiSmile } from "react-icons/bi";
 import { BsSend } from "react-icons/bs";
-import { user1 } from "../../samples/users";
 import PropTypes from "prop-types";
 
 // eslint-disable-next-line react/display-name
@@ -20,11 +19,6 @@ export const MessageInput = memo(({ addNewMessage }) => {
   const handleSendingMessage = () => {
     addNewMessage(message);
     setMessage("");
-
-    // видалити після налаштування бекенду
-    setTimeout(() => {
-      addNewMessage("Test message", user1);
-    }, 3000);
   };
 
   const handleKeyDown = (event) => {

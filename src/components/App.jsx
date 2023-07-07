@@ -41,7 +41,6 @@ function App() {
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
-  // const [ws, setWs] = useState();
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(user));
@@ -50,26 +49,8 @@ function App() {
   useEffect(() => {
     socket.on("messages", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
-      console.log(message);
     });
   }, []);
-
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://localhost:4000");
-  //   setWs(ws);
-  //   ws.addEventListener("message", handleMessage);
-
-  //   function handleMessage(e) {
-  //     console.log(e.data);
-  //   }
-  // }, []);
-
-  // useEffect(()=>{
-  // приймання нових повідомлень з бекенду
-  // socket.on("message", message => {
-  //   setMessages(prevMessages => [...prevMessages, message])
-  // })
-  // }, []);
 
   const closeModal = () => {
     setOpenedModal("");
@@ -83,8 +64,6 @@ function App() {
       createdAt: new Date().toISOString(),
       roomId: currentRoom.id,
     };
-    // setMessages((prevMessages) => [...prevMessages, newMessageObject]);
-    // відправка на бекенд
     socket.emit("messages", newMessageObject);
   };
 

@@ -42,18 +42,15 @@ export const CreateNewRoomModal = ({ onClose, user, addNewRoom }) => {
   };
 
   const handleCreateRoom = () => {
-    const newRoom = {
+    addNewRoom({
       name: roomName,
       activeUsers: [user._id],
       type: "group",
-      colors: {
-        backgroud: backgroundColor,
-        text: textColor,
-      },
-      private: isPrivate,
+      backgroundColor,
+      textColor,
+      isPrivate,
       password: "passwoord",
-    };
-    addNewRoom(newRoom);
+    });
     onClose();
   };
 

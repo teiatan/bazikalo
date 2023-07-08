@@ -18,7 +18,7 @@ import { nanoid } from "nanoid";
 import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
-import { createNewRoom } from "../api/ajaxRequests";
+import { createNewRoom, leaveNewRoom } from "../api/ajaxRequests";
 
 function App() {
   const [user, setUser] = useState(
@@ -160,7 +160,31 @@ function App() {
     }
   };
 
-  const addNewRoom = (newRoom) => {
+  const leaveRoom = (roomId) => {
+    setOpenedRooms((prev) => prev.filter((room) => room._id !== roomId));
+    leaveNewRoom(roomId, user._id);
+  };
+
+  const addNewRoom = ({
+    name,
+    activeUsers,
+    type = "group",
+    backgroundColor,
+    textColor,
+    isPrivate,
+    password = "",
+  }) => {
+    const newRoom = {
+      name,
+      activeUsers,
+      type,
+      colors: {
+        background: backgroundColor,
+        text: textColor,
+      },
+      private: isPrivate,
+      password,
+    };
     createNewRoom(newRoom).then((room) => {
       console.log(room);
       setCurrentRoom(room);
@@ -193,6 +217,7 @@ function App() {
             currentRoom={currentRoom}
             setCurrentRoom={setCurrentRoom}
             messages={messages}
+            leaveRoom={leaveRoom}
           />
         </div>
 

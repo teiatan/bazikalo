@@ -9,11 +9,15 @@ import {
 import { nanoid } from "nanoid";
 import { useAutoClosing } from "../../hooks/useAutoclosing";
 
-export const RoomDropDownMenu = ({ type, closeDropDownMenu }) => {
+export const RoomDropDownMenu = ({ type, closeDropDownMenu, leaveRoom }) => {
   useAutoClosing(() => closeDropDownMenu(false));
   return (
     <DropDownField>
-      <DropDownItem key={nanoid()} text={"Покинути кімнату"}>
+      <DropDownItem
+        key={nanoid()}
+        text={"Покинути кімнату"}
+        onClick={leaveRoom}
+      >
         <ImExit />
       </DropDownItem>
 

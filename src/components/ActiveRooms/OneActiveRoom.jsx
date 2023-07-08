@@ -8,12 +8,18 @@ export const OneActiveRoom = ({
   lastMessage,
   areActiveRoomsOpen,
   type,
+  leaveRoom,
+  id,
 }) => {
   const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
 
   const handleDropDownMenuButton = (e) => {
     e.stopPropagation();
     setIsDropDownMenuOpen(!isDropDownMenuOpen);
+  };
+
+  const handleLeaveRoom = () => {
+    leaveRoom(id);
   };
 
   return (
@@ -44,6 +50,7 @@ export const OneActiveRoom = ({
           <RoomDropDownMenu
             type={type}
             closeDropDownMenu={() => setIsDropDownMenuOpen(false)}
+            leaveRoom={handleLeaveRoom}
           />
         </div>
       )}
@@ -57,4 +64,6 @@ OneActiveRoom.propTypes = {
   lastMessage: PropTypes.string,
   areActiveRoomsOpen: PropTypes.bool,
   type: PropTypes.string,
+  leaveRoom: PropTypes.func,
+  id: PropTypes.string,
 };

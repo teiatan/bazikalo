@@ -17,6 +17,7 @@ export const ActiveRooms = ({
   messages,
   currentRoom,
   setCurrentRoom,
+  leaveRoom,
 }) => {
   return (
     <div className="flex flex-col justify-between h-full">
@@ -62,6 +63,7 @@ export const ActiveRooms = ({
                 lastMessage={lastMessage}
                 areActiveRoomsOpen={areActiveRoomsOpen}
                 type={type}
+                leaveRoom={leaveRoom}
               />
             </div>
           );

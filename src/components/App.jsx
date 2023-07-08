@@ -68,7 +68,6 @@ function App() {
   useEffect(() => {
     // отримання нових повідомлень
     socket.on("messages", (message) => {
-      console.log(message);
       setMessages((prevMessages) => {
         const index = prevMessages.findIndex((mes) => mes.id === message.id);
         if (index === -1) {
@@ -78,7 +77,7 @@ function App() {
       });
     });
 
-    // отримання даних по користувачу, який доєднався або оновив свої дані
+    // отримання даних по користувачу, який доєднався
     socket.on("userConnect", (user) => {
       const index = onlineUsers.findIndex(
         (presentUser) => presentUser._id === user._id
@@ -104,7 +103,7 @@ function App() {
       }
     });
 
-    // отримання всіх користувачів
+    // отримання всіх користувачів онлайн
     socket.on("onlineUsers", (users) => {
       setOnlineUsers(users);
     });
@@ -127,13 +126,20 @@ function App() {
     setOpenedModal("");
   };
 
-  const addNewMessage = (messageText, messageUser = user) => {
+  const addNewMessage = (messageText, messageUser = user, taggedUser) => {
     const newMessageObject = {
       id: nanoid(),
       owner: messageUser,
       content: messageText,
       createdAt: new Date().toISOString(),
       roomId: currentRoom._id,
+      tag: {
+        status: taggedUser ? true : false,
+        whom: {
+          _id: taggedUser?._id,
+          userName: taggedUser?._userName,
+        },
+      },
     };
     socket.emit("messages", newMessageObject);
   };

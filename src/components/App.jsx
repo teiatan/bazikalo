@@ -71,7 +71,6 @@ function App() {
 
     // отримання даних по користувачу, який доєднався або оновив свої дані
     socket.on("userConnect", (user) => {
-      console.log(user);
       const index = onlineUsers.findIndex(
         (presentUser) => presentUser._id === user._id
       );
@@ -94,6 +93,11 @@ function App() {
         const arr = onlineUsers.splice(index, 1);
         setOnlineUsers(arr);
       }
+    });
+
+    // отримання всіх користувачів
+    socket.on("onlineUsers", (users) => {
+      setOnlineUsers(users);
     });
   }, [onlineUsers]);
 

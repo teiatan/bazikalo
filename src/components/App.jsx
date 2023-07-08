@@ -7,7 +7,7 @@ import { OnlineUsersModal } from "./Modals/OnlineUsersModal";
 import { SettingsModal } from "./Modals/SettingsModal";
 import { MessageInput } from "./MessageInput/MessageInput";
 import { ToolBar } from "./ToolBar/Toolbar";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RulesModal } from "./Modals/RulesModal";
 import { Header } from "./Header/Header";
 import {
@@ -36,21 +36,66 @@ function App() {
     id: "1408",
   });
   const [openedRooms, setOpenedRooms] = useState(["1408"]);
-  const [allRooms] = useState(["1408", "111"]);
+  const [allRooms] = useState(["1408"]);
   const [openedModal, setOpenedModal] = useState(
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
+  const [typingUsers, setTypingUsers] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [blackListUsers, setBlackListUsers] = useState(
+    () => JSON.parse(localStorage.getItem("blackListUsers")) ?? []
+  );
 
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
+  const handleWindowBeforeUnload = useCallback(() => {
+    socket.emit("userDisconnect", { ...user, status: "disconnected" });
   }, [user]);
 
   useEffect(() => {
+    window.addEventListener("beforeunload", handleWindowBeforeUnload);
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    socket.emit("userConnect", { ...user, status: "connected" });
+  }, [user, handleWindowBeforeUnload]);
+
+  useEffect(() => {
+    localStorage.setItem("blackListUsers", JSON.stringify(blackListUsers));
+  }, [blackListUsers]);
+
+  useEffect(() => {
+    // отримання нових повідомлень
     socket.on("messages", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
-  }, []);
+
+    // отримання даних по користувачу, який доєднався або оновив свої дані
+    socket.on("userConnect", (user) => {
+      console.log(user);
+      const index = onlineUsers.findIndex(
+        (presentUser) => presentUser._id === user._id
+      );
+      if (index === -1) {
+        setOnlineUsers((prev) => [...prev, user]);
+      } else {
+        const arr = onlineUsers.splice(index, 1, user);
+        setOnlineUsers(arr);
+      }
+    });
+
+    // отримання даних по користувачу, який покинув чат
+    socket.on("userDisconnect", (user) => {
+      const index = onlineUsers.findIndex(
+        (presentUser) => presentUser._id === user._id
+      );
+      if (index === -1) {
+        return;
+      } else {
+        const arr = onlineUsers.splice(index, 1);
+        setOnlineUsers(arr);
+      }
+    });
+  }, [onlineUsers]);
 
   const closeModal = () => {
     setOpenedModal("");
@@ -67,6 +112,22 @@ function App() {
     socket.emit("messages", newMessageObject);
   };
 
+  const addToBlackList = (userDataObject) => {
+    setBlackListUsers((prev) => [...prev, userDataObject]);
+  };
+
+  const removeFromBlackList = (userDataObject) => {
+    const index = blackListUsers.findIndex(
+      (listUser) => listUser._id === userDataObject._id
+    );
+    if (index === -1) {
+      return;
+    } else {
+      const arr = onlineUsers.splice(index, 1);
+      setBlackListUsers(arr);
+    }
+  };
+
   return (
     <>
       <Header user={user} setOpenedModal={setOpenedModal} />
@@ -75,10 +136,11 @@ function App() {
         <div
           className={`
           p-4 border
-          ${areActiveRoomsOpen
+          ${
+            areActiveRoomsOpen
               ? `w-[${openAvtiveRoomsWidth}]`
               : `w-[${closedAvtiveRoomsWidth}]`
-            }
+          }
         `}
         >
           <ActiveRooms
@@ -96,10 +158,11 @@ function App() {
         <div
           className={`
           grid grid-rows-[80px_calc(100vh-80px-80px-160px)_160px] border
-          ${areActiveRoomsOpen
+          ${
+            areActiveRoomsOpen
               ? `w-[calc(100vw-345px)]`
               : `w-[calc(100vw-102px)]`
-            }
+          }
         `}
         >
           <ToolBar roomName={currentRoom.name} type={currentRoom.type} />
@@ -108,6 +171,7 @@ function App() {
               (message) => message.roomId === currentRoom.id
             )}
             user={user}
+            typing={typingUsers}
           />
           <MessageInput addNewMessage={addNewMessage} />
         </div>
@@ -131,7 +195,13 @@ function App() {
           <CreateNewRoomModal onClose={closeModal} />
         )}
         {openedModal === "OnlineUsers" && (
-          <OnlineUsersModal onClose={closeModal} />
+          <OnlineUsersModal
+            onClose={closeModal}
+            onlineUsers={onlineUsers}
+            blackListUsers={blackListUsers}
+            addToBlackList={addToBlackList}
+            removeFromBlackList={removeFromBlackList}
+          />
         )}
         {openedModal === "Settings" && (
           <SettingsModal onClose={closeModal} user={user} setUser={setUser} />

@@ -10,7 +10,7 @@ import {
 import { IoAccessibilitySharp } from "react-icons/io5";
 
 export const ActiveRooms = ({
-  rooms = activeRooms,
+  rooms,
   areActiveRoomsOpen,
   setAreActiveRoomsOpen,
   setOpenedModal,
@@ -43,20 +43,20 @@ export const ActiveRooms = ({
         )}
 
         {rooms.map((room) => {
-          const { id, name, activeUsers, type } = room;
+          const { _id, name, activeUsers, type } = room;
           const thisRoomMessages = messages.filter(
-            (message) => message.roomId === id
+            (message) => message.roomId === _id
           );
           const lastMessage =
             thisRoomMessages[thisRoomMessages.length - 1]?.content;
           return (
             <div
-              key={id}
-              onClick={() => setCurrentRoom({ name, id, type })}
-              className={currentRoom.id === id ? "bg-[#D9D9D9]" : ""}
+              key={_id}
+              onClick={() => setCurrentRoom(room)}
+              className={currentRoom._id === _id ? "bg-[#D9D9D9]" : ""}
             >
               <OneActiveRoom
-                id={id}
+                id={_id}
                 name={name}
                 amountOfActiveUsers={activeUsers.length}
                 lastMessage={lastMessage}

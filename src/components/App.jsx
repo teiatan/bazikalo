@@ -17,6 +17,8 @@ import {
 import { nanoid } from "nanoid";
 import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
+import { generalRoom } from "../samples/activeRooms";
+import { createNewRoom } from "../api/ajaxRequests";
 
 function App() {
   const [user, setUser] = useState(
@@ -31,12 +33,9 @@ function App() {
       }
   );
   const [messages, setMessages] = useState([...messagesArray]);
-  const [currentRoom, setCurrentRoom] = useState({
-    name: "general",
-    id: "1408",
-  });
-  const [openedRooms, setOpenedRooms] = useState(["1408"]);
-  const [allRooms] = useState(["1408"]);
+  const [currentRoom, setCurrentRoom] = useState(generalRoom);
+  const [openedRooms, setOpenedRooms] = useState([generalRoom]);
+  const [allRooms, setAllRooms] = useState([]);
   const [openedModal, setOpenedModal] = useState(
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
@@ -66,7 +65,14 @@ function App() {
   useEffect(() => {
     // отримання нових повідомлень
     socket.on("messages", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+      console.log(message);
+      setMessages((prevMessages) => {
+        const index = prevMessages.findIndex((mes) => mes.id === message.id);
+        if (index === -1) {
+          return [...prevMessages, message];
+        }
+        return prevMessages;
+      });
     });
 
     // отримання даних по користувачу, який доєднався або оновив свої дані
@@ -99,7 +105,20 @@ function App() {
     socket.on("onlineUsers", (users) => {
       setOnlineUsers(users);
     });
-  }, [onlineUsers]);
+
+    // отримання всіх кімнат
+    socket.on("allRooms", (rooms) => {
+      setAllRooms(rooms);
+      //оновлення відкритих кімнат
+      const refreshedOpenedRooms = openedRooms.map((room) => {
+        const indexInAll = rooms.findIndex(
+          (refreshedRoom) => refreshedRoom._id === room._id
+        );
+        return rooms[indexInAll];
+      });
+      setOpenedRooms(refreshedOpenedRooms);
+    });
+  }, [onlineUsers, openedRooms]);
 
   const closeModal = () => {
     setOpenedModal("");
@@ -111,7 +130,7 @@ function App() {
       owner: messageUser,
       content: messageText,
       createdAt: new Date().toISOString(),
-      roomId: currentRoom.id,
+      roomId: currentRoom._id,
     };
     socket.emit("messages", newMessageObject);
   };
@@ -132,6 +151,14 @@ function App() {
     }
   };
 
+  const addNewRoom = (newRoom) => {
+    createNewRoom(newRoom).then((room) => {
+      console.log(room);
+      setCurrentRoom(room);
+      setOpenedRooms((prev) => [...prev, room]);
+    });
+  };
+
   return (
     <>
       <Header user={user} setOpenedModal={setOpenedModal} />
@@ -148,6 +175,7 @@ function App() {
         `}
         >
           <ActiveRooms
+            rooms={openedRooms}
             setAreActiveRoomsOpen={setAreActiveRoomsOpen}
             areActiveRoomsOpen={areActiveRoomsOpen}
             setOpenedModal={setOpenedModal}
@@ -172,7 +200,7 @@ function App() {
           <ToolBar roomName={currentRoom.name} type={currentRoom.type} />
           <MessagesList
             messages={messages.filter(
-              (message) => message.roomId === currentRoom.id
+              (message) => message.roomId === currentRoom._id
             )}
             user={user}
             typing={typingUsers}
@@ -196,7 +224,11 @@ function App() {
           />
         )}
         {openedModal === "CreateNewRoom" && (
-          <CreateNewRoomModal onClose={closeModal} />
+          <CreateNewRoomModal
+            onClose={closeModal}
+            user={user}
+            addNewRoom={addNewRoom}
+          />
         )}
         {openedModal === "OnlineUsers" && (
           <OnlineUsersModal

@@ -2,7 +2,7 @@ import { user1, user2, user3, user4 } from "./users"
 
 export const activeRooms = [
     {
-        id: '1408',
+        id: '64a99b9d5dca528b9636b96b',
         name: 'general',
         activeUsers: [
             user1,
@@ -13,7 +13,9 @@ export const activeRooms = [
         colors: {
             backgroud: '#ffffff',
             text: '#000000'
-        }
+        },
+        private: false,
+        password: 'passwoord'
     },
     // {
     //     id: '111',
@@ -44,3 +46,16 @@ export const activeRooms = [
     //     }
     // }
 ];
+
+export const generalRoom = {
+    name: "general",
+    _id: "64a99b9d5dca528b9636b96b",
+    activeUsers: [],
+    type: "group",
+    colors: {
+      backgroud: "#ffffff",
+      text: "#000000",
+    },
+    private: false,
+    password: "passwoord",
+}

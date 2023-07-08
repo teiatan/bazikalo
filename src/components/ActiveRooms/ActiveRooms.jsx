@@ -22,7 +22,7 @@ export const ActiveRooms = ({
     <div className="flex flex-col justify-between h-full">
       <div className="relative">
         {areActiveRoomsOpen && <h2 className="text-center">Активні кімнати</h2>}
-        {areActiveRoomsOpen && <SearchForm placeholder={"Пошук кімнат..."} />}
+        {/* {areActiveRoomsOpen && <SearchForm placeholder={"Пошук кімнат..."} />} */}
 
         {areActiveRoomsOpen && <FilterRooms />}
 

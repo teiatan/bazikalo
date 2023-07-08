@@ -51,6 +51,9 @@ function App() {
   }, [user]);
 
   useEffect(() => {
+    if (user._id === "") {
+      return;
+    }
     window.addEventListener("beforeunload", handleWindowBeforeUnload);
 
     localStorage.setItem("user", JSON.stringify(user));

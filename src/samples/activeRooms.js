@@ -3,7 +3,7 @@ import { user1, user2, user3, user4 } from "./users"
 export const activeRooms = [
     {
         id: '64a99b9d5dca528b9636b96b',
-        name: 'general',
+        name: 'General',
         activeUsers: [
             user1,
             user2,

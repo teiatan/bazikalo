@@ -18,3 +18,13 @@ export const updateUserSetting = async (newUserData) => {
     const { data } = await axios.put(`/user/${newUserData._id}`, newUserData);
     return data;
 };
+
+export const createNewRoom = async (newRoom) => {
+    const { data } = await axios.post("/rooms", { newRoom });
+    return data;
+};
+
+export const leaveNewRoom = async (roomId, userId) => {
+    const { data } = await axios.delete(`/rooms/${roomId}`, userId);
+    return data;
+};

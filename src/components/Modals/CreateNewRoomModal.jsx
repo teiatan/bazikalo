@@ -44,7 +44,7 @@ export const CreateNewRoomModal = ({ onClose, user, addNewRoom }) => {
   const handleCreateRoom = () => {
     const newRoom = {
       name: roomName,
-      activeUsers: [user],
+      activeUsers: [user._id],
       type: "group",
       colors: {
         backgroud: backgroundColor,

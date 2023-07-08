@@ -14,6 +14,15 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
     onClose();
   };
 
+  const handleClick = (e) => {
+    if (!areRulesAccepted || userName === "") {
+      e.preventDefault();
+      alert("Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами");
+    } else {
+      handleSubmit();
+    }
+  };
+
   return (
     <ModalCover
       buttonStyles="hidden"
@@ -21,7 +30,6 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
       containerStyles="bg-white"
     >
       <form
-        onSubmit={handleSubmit}
         className="h-full flex flex-col justify-center items-center p-4 text-lg"
       >
         <h2 className="text-3xl">Вітаємо у чаті Базікало!</h2>
@@ -58,17 +66,12 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
             правилами чату
           </button>
         </label>
-
         <button
           type="submit"
-          disabled={!areRulesAccepted || userName === ""}
-          className={`
-                            ${
-                              (!areRulesAccepted || userName === "") &&
-                              "opacity-0"
-                            }
-                            bg-black text-white my-[30px] p-2 rounded-lg
-                        `}
+          className={`bg-black text-white my-[30px] p-2 rounded-lg cursor-pointer ${areRulesAccepted && userName !== "" ? 'opacity-100' : 'opacity-30'
+            }`}
+          title={!areRulesAccepted || userName === "" ? 'Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами' : ''}
+          onClick={handleClick}
         >
           Вперед до спілкування!
         </button>

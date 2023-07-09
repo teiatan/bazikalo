@@ -33,6 +33,7 @@ export const OnlineUsersModal = memo(
     blackListUsers,
     addToBlackList,
     removeFromBlackList,
+    addNewRoom,
   }) => {
     const [searchUserOnline, setsearchUserOnline] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -75,6 +76,17 @@ export const OnlineUsersModal = memo(
 
     const isInBlackList = (user) => {
       return blackList.includes(user);
+    };
+
+    const handleStart1x1Chat = () => {
+      addNewRoom({
+        name: "1x1userName",
+        activeUsers: ["1x1userId"],
+        type: "1x1",
+        backgroundColor: "1x1userBgColor",
+        textColor: "1x1userTxColor",
+      });
+      onClose();
     };
 
     return (
@@ -122,7 +134,11 @@ export const OnlineUsersModal = memo(
                         onMouseLeave={handleDropDownMenuClose}
                       >
                         <DropDownField>
-                          <DropDownItem key={nanoid()} text={"Чат 1х1"}>
+                          <DropDownItem
+                            key={nanoid()}
+                            text={"Чат 1х1"}
+                            onClick={handleStart1x1Chat}
+                          >
                             <PiChatsCircleBold />
                           </DropDownItem>
                           {isInBlackList(user) ? (

@@ -18,7 +18,7 @@ import { nanoid } from "nanoid";
 import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
-import { createNewRoom, leaveNewRoom } from "../api/ajaxRequests";
+import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
 
 function App() {
   const [user, setUser] = useState(
@@ -163,20 +163,28 @@ function App() {
   const leaveRoom = (roomId) => {
     setOpenedRooms((prev) => prev.filter((room) => room._id !== roomId));
     leaveNewRoom(roomId, user._id);
+    setCurrentRoom(generalRoom);
+  };
+
+  const joinExistingRoom = (roomId) => {
+    joinRoom(roomId, user._id).then((res) => {
+      setOpenedRooms((prev) => [...prev, res]);
+      setCurrentRoom(res);
+    });
   };
 
   const addNewRoom = ({
     name,
-    activeUsers,
+    activeUsers = [],
     type = "group",
-    backgroundColor,
-    textColor,
-    isPrivate,
+    backgroundColor = "#ffffff",
+    textColor = "#000000",
+    isPrivate = false,
     password = "",
   }) => {
     const newRoom = {
       name,
-      activeUsers,
+      activeUsers: [...activeUsers, user._id],
       type,
       colors: {
         background: backgroundColor,
@@ -186,7 +194,6 @@ function App() {
       password,
     };
     createNewRoom(newRoom).then((room) => {
-      console.log(room);
       setCurrentRoom(room);
       setOpenedRooms((prev) => [...prev, room]);
     });
@@ -218,6 +225,7 @@ function App() {
             setCurrentRoom={setCurrentRoom}
             messages={messages}
             leaveRoom={leaveRoom}
+            joinExistingRoom={joinExistingRoom}
           />
         </div>
 
@@ -258,11 +266,7 @@ function App() {
           />
         )}
         {openedModal === "CreateNewRoom" && (
-          <CreateNewRoomModal
-            onClose={closeModal}
-            user={user}
-            addNewRoom={addNewRoom}
-          />
+          <CreateNewRoomModal onClose={closeModal} addNewRoom={addNewRoom} />
         )}
         {openedModal === "OnlineUsers" && (
           <OnlineUsersModal
@@ -271,6 +275,7 @@ function App() {
             blackListUsers={blackListUsers}
             addToBlackList={addToBlackList}
             removeFromBlackList={removeFromBlackList}
+            addNewRoom={addNewRoom}
           />
         )}
         {openedModal === "Settings" && (

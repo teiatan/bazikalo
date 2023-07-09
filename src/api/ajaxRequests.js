@@ -25,7 +25,11 @@ export const createNewRoom = async (newRoom) => {
 };
 
 export const leaveNewRoom = async (roomId, userId) => {
-    console.log(userId);
     const { data } = await axios.put(`/rooms/${roomId}`, { userId });
     return data;
 };
+
+export const joinRoom = async (roomId, userId) => {
+    const { data } = await axios.patch(`/rooms/${roomId}`, { userId });
+    return data;
+}

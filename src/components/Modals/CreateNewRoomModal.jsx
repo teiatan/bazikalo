@@ -4,7 +4,7 @@ import { BsEyeSlash } from "react-icons/bs";
 import { nanoid } from "nanoid";
 import { createNewRoom } from "../../api/ajaxRequests";
 
-export const CreateNewRoomModal = ({ onClose, user, addNewRoom }) => {
+export const CreateNewRoomModal = ({ onClose, addNewRoom }) => {
   const [roomName, setRoomName] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#000000");
   const [textColor, setTextColor] = useState("#ffffff");
@@ -44,7 +44,6 @@ export const CreateNewRoomModal = ({ onClose, user, addNewRoom }) => {
   const handleCreateRoom = () => {
     addNewRoom({
       name: roomName,
-      activeUsers: [user._id],
       type: "group",
       backgroundColor,
       textColor,

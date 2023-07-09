@@ -7,17 +7,18 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
   const [userName, setUserName] = useState("");
   const [areRulesAccepted, setAreRulesAccepted] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const data = await authenticate(userName);
     setUser(data);
     onClose();
   };
 
   const handleClick = (e) => {
+    e.preventDefault();
     if (!areRulesAccepted || userName === "") {
-      e.preventDefault();
-      alert("Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами");
+      alert(
+        "Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами"
+      );
     } else {
       handleSubmit();
     }
@@ -29,9 +30,7 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
       wrapperStyles="bg-white"
       containerStyles="bg-white"
     >
-      <form
-        className="h-full flex flex-col justify-center items-center p-4 text-lg"
-      >
+      <form className="h-full flex flex-col justify-center items-center p-4 text-lg">
         <h2 className="text-3xl">Вітаємо у чаті Базікало!</h2>
 
         <label htmlFor="userName" className="text-center">
@@ -68,9 +67,14 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
         </label>
         <button
           type="submit"
-          className={`bg-black text-white my-[30px] p-2 rounded-lg cursor-pointer ${areRulesAccepted && userName !== "" ? 'opacity-100' : 'opacity-30'
-            }`}
-          title={!areRulesAccepted || userName === "" ? 'Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами' : ''}
+          className={`bg-black text-white my-[30px] p-2 rounded-lg cursor-pointer ${
+            areRulesAccepted && userName !== "" ? "opacity-100" : "opacity-30"
+          }`}
+          title={
+            !areRulesAccepted || userName === ""
+              ? "Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами"
+              : ""
+          }
           onClick={handleClick}
         >
           Вперед до спілкування!

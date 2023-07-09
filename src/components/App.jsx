@@ -181,10 +181,11 @@ function App() {
     textColor = "#000000",
     isPrivate = false,
     password = "",
+    userToChat = [],
   }) => {
     const newRoom = {
       name,
-      activeUsers: [...activeUsers, user._id],
+      activeUsers: [user._id, ...userToChat, ...activeUsers],
       type,
       colors: {
         background: backgroundColor,

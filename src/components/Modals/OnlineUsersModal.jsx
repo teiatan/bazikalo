@@ -81,7 +81,7 @@ export const OnlineUsersModal = memo(
     const handleStart1x1Chat = () => {
       addNewRoom({
         name: "1x1userName",
-        activeUsers: ["1x1userId"],
+        userToChat: ["1x1userId"],
         type: "1x1",
         backgroundColor: "1x1userBgColor",
         textColor: "1x1userTxColor",

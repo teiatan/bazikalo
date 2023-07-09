@@ -1,4 +1,4 @@
-import { memo, useState, useRef } from "react";
+import { memo, useState, useEffect, useRef } from "react";
 import Picker from "@emoji-mart/react";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { BiSmile } from "react-icons/bi";
@@ -12,11 +12,25 @@ export const MessageInput = memo(({ addNewMessage }) => {
   const inputRef = useRef(null);
   const timeoutRef = useRef(null);
 
+  useEffect(() => {
+    const handleKeyPress = () => {
+      inputRef.current.focus();
+    };
+    document.addEventListener("keypress", handleKeyPress);
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+    };
+  }, []);
+
   const onChangeHandler = (event) => {
     setMessage(event.target.value);
   };
 
   const handleSendingMessage = () => {
+    if (message.trim() === "") {
+      alert("Поле введення порожнє!");
+      return;
+    }
     addNewMessage(message);
     setMessage("");
   };
@@ -77,7 +91,10 @@ export const MessageInput = memo(({ addNewMessage }) => {
           >
             <BiSmile />
           </button>
-          <button className="px-4 py-2 rounded text-xl">
+          <button
+            className="px-4 py-2 rounded text-xl"
+            title={"Прикріпити файл"}
+          >
             <AiOutlinePaperClip />
           </button>
         </div>
@@ -85,6 +102,7 @@ export const MessageInput = memo(({ addNewMessage }) => {
           className="px-4 py-2 rounded mt-2 border bg-white flex items-center"
           type="button"
           onClick={handleSendingMessage}
+          title={"Надіслати повідомлення"}
         >
           <BsSend className="text-xl" />
         </button>

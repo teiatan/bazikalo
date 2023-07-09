@@ -20,6 +20,7 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal }) => {
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);
     const timeoutRef = useRef(null);
+    const inputRef = useRef(null);
 
     useEffect(() => {
         setFilteredRooms(allRooms);
@@ -31,6 +32,16 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal }) => {
         );
         setFilteredRooms(filtered);
     }, [searchRoom]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            inputRef.current.focus();
+        }, 100);
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, []);
 
     const onChangeHandler = (event) => {
         setsearchRoom(event.target.value);
@@ -75,6 +86,7 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal }) => {
                 <h3 className="text-center font-bold mb-2">Всі кімнати</h3>
                 <form className="relative">
                     <input
+                        ref={inputRef}
                         type="text"
                         onChange={onChangeHandler}
                         value={searchRoom}

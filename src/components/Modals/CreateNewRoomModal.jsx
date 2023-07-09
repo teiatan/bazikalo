@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { memo, useState, useEffect, useRef } from "react";
 import { ModalCover } from "./ModalCover";
 import { BsEyeSlash } from "react-icons/bs";
 import { nanoid } from "nanoid";
 import { createNewRoom } from "../../api/ajaxRequests";
 
-export const CreateNewRoomModal = ({ onClose, addNewRoom }) => {
+export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
   const [roomName, setRoomName] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#000000");
   const [textColor, setTextColor] = useState("#ffffff");
   const [isPrivate, setIsPrivate] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleRoomNameChange = (e) => {
     setRoomName(e.target.value);
@@ -42,6 +47,11 @@ export const CreateNewRoomModal = ({ onClose, addNewRoom }) => {
   };
 
   const handleCreateRoom = () => {
+    if (roomName.trim() === "") {
+      alert("Назва кімнати не може бути порожньою!");
+      return;
+    }
+
     addNewRoom({
       name: roomName,
       type: "group",
@@ -58,6 +68,7 @@ export const CreateNewRoomModal = ({ onClose, addNewRoom }) => {
       <div className="flex flex-col gap-4 w-3/4">
         <h3 className="text-center font-bold mb-2">Нова кімната</h3>
         <input
+          ref={inputRef}
           type="text"
           className="w-full px-4 py-2 border rounded"
           placeholder="Введіть назву кімнати ..."
@@ -146,4 +157,4 @@ export const CreateNewRoomModal = ({ onClose, addNewRoom }) => {
       </div>
     </ModalCover>
   );
-};
+});

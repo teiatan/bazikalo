@@ -1,15 +1,26 @@
 import { ModalCover } from "./ModalCover";
-import { useState } from "react";
+import { memo, useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { ColorPicker } from "../Common/ColorPicker";
 import { updateUserSetting } from "../../api/ajaxRequests";
 
-export const SettingsModal = ({ onClose, user, setUser }) => {
+export const SettingsModal = memo(({ onClose, user, setUser }) => {
   const [userName, setUserName] = useState(user.userName);
   const [backgroundColor, setBackgroundColor] = useState(
     user.colors.background
   );
   const [textColor, setTextColor] = useState(user.colors.text);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      inputRef.current.focus();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const handleNameChange = (e) => {
     setUserName(e.target.value);
@@ -57,6 +68,7 @@ export const SettingsModal = ({ onClose, user, setUser }) => {
             <label>
               Мій нікнейм
               <input
+                ref={inputRef}
                 type="text"
                 className="w-full px-4 py-2 border rounded"
                 placeholder="Введіть ваш нікнейм ..."
@@ -102,7 +114,7 @@ export const SettingsModal = ({ onClose, user, setUser }) => {
       </form>
     </ModalCover>
   );
-};
+});
 
 SettingsModal.propTypes = {
   onClose: PropTypes.func,

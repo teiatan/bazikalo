@@ -39,6 +39,17 @@ export const OnlineUsersModal = memo(
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);
     const timeoutRef = useRef(null);
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        inputRef.current.focus();
+      }, 100);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }, []);
 
     useEffect(() => {
       setFilteredUsers(usersOnline);
@@ -95,6 +106,7 @@ export const OnlineUsersModal = memo(
           <h3 className="text-center font-bold mb-2">Всі користувачі</h3>
           <form className="relative">
             <input
+              ref={inputRef}
               type="text"
               onChange={onChangeHandler}
               value={searchUserOnline}

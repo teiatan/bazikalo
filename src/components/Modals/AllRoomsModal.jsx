@@ -11,7 +11,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 
-export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, allRooms }) => {
+export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, allRooms, openedRooms }) => {
     const [searchRoom, setSearchRoom] = useState('');
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);
@@ -23,7 +23,13 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
     const inputRef = useRef(null);
 
     const handleRoomClick = (room) => {
+        const isRoomOpened = openedRooms.some((openedRoom) => openedRoom._id === room._id);
+        if (isRoomOpened) {
+            alert("Ця кімната вже у вас відкрита");
+            return;
+        }
         setSelectedRoom(room);
+
         if (room.private) {
             setShowPasswordModal(true);
         } else {

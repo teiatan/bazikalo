@@ -1,8 +1,6 @@
 import { memo, useState, useEffect, useRef } from "react";
 import { ModalCover } from "./ModalCover";
 import { BsEyeSlash } from "react-icons/bs";
-import { nanoid } from "nanoid";
-import { createNewRoom } from "../../api/ajaxRequests";
 
 export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
   const [roomName, setRoomName] = useState("");

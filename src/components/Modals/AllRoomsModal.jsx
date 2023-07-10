@@ -12,10 +12,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 
-
-const allRooms = [{ name: 'a', password: 'b', private: true }, { name: 'ab', isPrivate: false }]
-
-export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, openedRooms }) => {
+export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, allRooms, openedRooms }) => {
     const [searchRoom, setSearchRoom] = useState('');
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);

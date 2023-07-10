@@ -40,7 +40,7 @@ export const OnlineUsersModal = memo(
 
     useEffect(() => {
       const filtered = onlineUsers.filter((user) =>
-        user.toLowerCase().includes(searchUserOnline.toLowerCase())
+        user.userName.toLowerCase().includes(searchUserOnline.toLowerCase())
       );
       setFilteredUsers(filtered);
     }, [searchUserOnline]);

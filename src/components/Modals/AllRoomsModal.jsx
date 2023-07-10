@@ -9,9 +9,13 @@ import { FiEyeOff } from "react-icons/fi";
 import { PiChatsCircleBold } from "react-icons/pi";
 import { HiDotsVertical } from "react-icons/hi";
 import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 
-export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, allRooms, openedRooms }) => {
+
+const allRooms = [{ name: 'a', password: 'b', private: true }, { name: 'ab', isPrivate: false }]
+
+export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, openedRooms }) => {
     const [searchRoom, setSearchRoom] = useState('');
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);
@@ -21,6 +25,7 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
     const [passwordType, setPasswordType] = useState("password");
     const timeoutRef = useRef(null);
     const inputRef = useRef(null);
+    const passwordInputRef = useRef(null);
 
     const handleRoomClick = (room) => {
         const isRoomOpened = openedRooms.some((openedRoom) => openedRoom._id === room._id);
@@ -83,6 +88,18 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
             clearTimeout(timeoutId);
         };
     }, []);
+
+    useEffect(() => {
+        if (showPasswordModal) {
+            const timeoutId = setTimeout(() => {
+                passwordInputRef.current.focus();
+            }, 0);
+
+            return () => {
+                clearTimeout(timeoutId);
+            };
+        }
+    }, [showPasswordModal]);
 
     const onChangeHandler = (event) => {
         setSearchRoom(event.target.value);
@@ -218,12 +235,12 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
                     </button>
                 </div>
                 {showPasswordModal &&
-                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                        <div className="bg-white rounded p-4">
+                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
+                        <div className="bg-white rounded p-4 relative">
                             <h2 className="text-lg font-bold mb-4">Введіть пароль</h2>
-                            <form className="relative">
+                            <form>
                                 <input
-                                    // ref={inputRef}
+                                    ref={passwordInputRef}
                                     type={passwordType}
                                     value={passwordConfirm}
                                     onChange={handlePasswordConfirm}
@@ -232,7 +249,7 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
                                 />
                                 <BsEyeSlash
                                     onClick={togglePassword}
-                                    className="absolute top-3.5 right-3 cursor-pointer"
+                                    className="absolute top-[75px] right-6 cursor-pointer"
                                 />
                                 <button
                                     type="submit"
@@ -241,7 +258,12 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
                                 >
                                     Доєднатись
                                 </button>
+                                <AiOutlineClose
+                                    className="absolute top-1.5 right-1.5 cursor-pointer"
+                                    onClick={() => setShowPasswordModal(false)}
+                                />
                             </form>
+
                         </div>
                     </div>
                 }

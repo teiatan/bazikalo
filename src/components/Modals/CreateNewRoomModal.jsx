@@ -28,8 +28,6 @@ export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
     setPassword(e.target.value);
   }
 
-  console.log(password)
-
   const handleRoomNameChange = (e) => {
     setRoomName(e.target.value);
   };

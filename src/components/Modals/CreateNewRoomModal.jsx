@@ -9,12 +9,26 @@ export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
   const [backgroundColor, setBackgroundColor] = useState("#000000");
   const [textColor, setTextColor] = useState("#ffffff");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
   const inputRef = useRef(null);
+  const passwordInputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (isPrivate) {
+      passwordInputRef.current.focus();
+    }
+  }, [isPrivate]);
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  }
+
+  console.log(password)
 
   const handleRoomNameChange = (e) => {
     setRoomName(e.target.value);
@@ -58,7 +72,7 @@ export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
       backgroundColor,
       textColor,
       isPrivate,
-      password: "passwoord",
+      password: password,
     });
     onClose();
   };
@@ -100,8 +114,11 @@ export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
         <div className={`relative ${isPrivate ? "visible" : "invisible"}`}>
           <p>Створіть ключ для приватної кімнати</p>
           <input
+            ref={passwordInputRef}
             type={passwordType}
             className="w-full px-4 py-2 border rounded"
+            value={password}
+            onChange={handlePassword}
           />
           <BsEyeSlash
             onClick={togglePassword}

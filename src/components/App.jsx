@@ -261,6 +261,7 @@ function App() {
             setOpenedModal={setOpenedModal}
             onClose={closeModal}
             allRooms={allRooms}
+            openedRooms={openedRooms}
             joinExistingRoom={joinExistingRoom}
           />
         )}

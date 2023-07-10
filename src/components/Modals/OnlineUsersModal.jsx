@@ -8,23 +8,6 @@ import { BsSearch } from "react-icons/bs";
 import { PiChatsCircleBold } from "react-icons/pi";
 import { AiOutlineStop } from "react-icons/ai";
 
-// Видалити, коли буде список с бєка та змінити key = id
-const usersOnline = [
-  "A",
-  "Сергій12",
-  "Сергій11",
-  "Сергій13",
-  "Сергій14",
-  "Сергій15",
-  "Сергій16",
-  "Сергій17",
-  "Сергій18",
-  "Сергій19",
-  "Сергій20",
-  "Сергій21",
-];
-const blackList = ["Сергій12", "Сергій11"];
-
 // eslint-disable-next-line react/display-name
 export const OnlineUsersModal = memo(
   ({
@@ -52,11 +35,11 @@ export const OnlineUsersModal = memo(
     }, []);
 
     useEffect(() => {
-      setFilteredUsers(usersOnline);
+      setFilteredUsers(onlineUsers);
     }, []);
 
     useEffect(() => {
-      const filtered = usersOnline.filter((user) =>
+      const filtered = onlineUsers.filter((user) =>
         user.toLowerCase().includes(searchUserOnline.toLowerCase())
       );
       setFilteredUsers(filtered);
@@ -86,7 +69,7 @@ export const OnlineUsersModal = memo(
     };
 
     const isInBlackList = (user) => {
-      return blackList.includes(user);
+      return blackListUsers.includes(user);
     };
 
     const handleStart1x1Chat = () => {
@@ -122,7 +105,7 @@ export const OnlineUsersModal = memo(
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user, index) => (
                 <li
-                  key={index}
+                  key={nanoid()}
                   className="flex items-start justify-between border border-black p-2 mb-3 relative"
                 >
                   <div className="flex">
@@ -157,6 +140,7 @@ export const OnlineUsersModal = memo(
                             <DropDownItem
                               key={nanoid()}
                               text={"Видалити з чорного списка"}
+                              onClick={removeFromBlackList(user)}
                             >
                               <AiOutlineStop />
                             </DropDownItem>
@@ -164,6 +148,7 @@ export const OnlineUsersModal = memo(
                             <DropDownItem
                               key={nanoid()}
                               text={"Додати в чорний список"}
+                              onClick={addToBlackList(user)}
                             >
                               <AiOutlineStop />
                             </DropDownItem>

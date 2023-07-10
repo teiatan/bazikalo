@@ -12,11 +12,11 @@ import { AiOutlineStop } from "react-icons/ai";
 export const OnlineUsersModal = memo(
   ({
     onClose,
+    addNewRoom,
     onlineUsers,
     blackListUsers,
     addToBlackList,
-    removeFromBlackList,
-    addNewRoom,
+    removeFromBlackList
   }) => {
     const [searchUserOnline, setsearchUserOnline] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -40,7 +40,7 @@ export const OnlineUsersModal = memo(
 
     useEffect(() => {
       const filtered = onlineUsers.filter((user) =>
-        user.toLowerCase().includes(searchUserOnline.toLowerCase())
+        user.userName.toLowerCase().includes(searchUserOnline.toLowerCase())
       );
       setFilteredUsers(filtered);
     }, [searchUserOnline]);

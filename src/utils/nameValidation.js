@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { validate } from './validationFunction';
 
-const namePattern = /[A-Za-zа-щА-ЩЬьЮюЯяЇїІіЄєҐґ0-9]{3,20}/;
+const namePattern = /[A-Za-zа-щА-ЩЬьЮюЯяЇїІіЄєҐґ0-9 ]{3,20}/;
 // const errorsNames = {
 //     absent: 'name should not be empty',
 //     long: 'length should be less than 16 characters',

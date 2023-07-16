@@ -3,9 +3,12 @@ import { memo, useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { ColorPicker } from "../Common/ColorPicker";
 import { updateUserSetting } from "../../api/ajaxRequests";
+import { validateName } from "../../utils/nameValidation";
 
+// eslint-disable-next-line react/display-name
 export const SettingsModal = memo(({ onClose, user, setUser }) => {
   const [userName, setUserName] = useState(user.userName);
+  const [userNameValidation, setUserNameValidation] = useState("unknown");
   const [backgroundColor, setBackgroundColor] = useState(
     user.colors.background
   );
@@ -24,6 +27,7 @@ export const SettingsModal = memo(({ onClose, user, setUser }) => {
 
   const handleNameChange = (e) => {
     setUserName(e.target.value);
+    validateName(e.target.value).then((res) => setUserNameValidation(res));
   };
 
   const handleBackgroundColorChange = (e) => {
@@ -75,6 +79,11 @@ export const SettingsModal = memo(({ onClose, user, setUser }) => {
                 value={userName}
                 onChange={handleNameChange}
               />
+              {!userNameValidation.isValid && (
+                <p className="text-xs text-red-600">
+                  {userNameValidation?.error}
+                </p>
+              )}
             </label>
 
             <div className="flex items-center justify-between">
@@ -107,7 +116,10 @@ export const SettingsModal = memo(({ onClose, user, setUser }) => {
         <button
           type="button"
           onClick={handleSaveChangings}
-          className="px-4 py-2 border rounded bg-black text-white"
+          className={`px-4 py-2 border rounded bg-black text-white ${
+            userNameValidation.isValid ? "opacity-100" : "opacity-30"
+          }`}
+          disabled={!userNameValidation.isValid}
         >
           Зберегти зміни
         </button>

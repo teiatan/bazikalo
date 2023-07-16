@@ -203,8 +203,6 @@ function App() {
   };
 
   const notification = useNotification();
-  validateName("Ээээ").then((res) => console.log(res));
-  // console.log(validateName("Таня"));
 
   return (
     <>

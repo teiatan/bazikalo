@@ -2,9 +2,11 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { ModalCover } from "./ModalCover";
 import { authenticate } from "../../api/ajaxRequests";
+import { validateName } from "../../utils/nameValidation";
 
 export const AuthModal = ({ onClose, changeModal, setUser }) => {
   const [userName, setUserName] = useState("");
+  const [userNameValidation, setUserNameValidation] = useState("unknown");
   const [areRulesAccepted, setAreRulesAccepted] = useState(false);
 
   const handleSubmit = async () => {
@@ -15,14 +17,16 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (!areRulesAccepted || userName === "") {
-      alert(
-        "Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами"
-      );
-    } else {
-      handleSubmit();
-    }
+    handleSubmit();
   };
+
+  const handleInputChange = (e) => {
+    setUserName(e.target.value);
+    validateName(e.target.value).then((res) => setUserNameValidation(res));
+  };
+
+  const nameValidationRule =
+    areRulesAccepted && userName !== "" && userNameValidation.isValid;
 
   return (
     <ModalCover
@@ -33,7 +37,7 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
       <form className="h-full flex flex-col justify-center items-center p-4 text-lg">
         <h2 className="text-3xl">Вітаємо у чаті Базікало!</h2>
 
-        <label htmlFor="userName" className="text-center">
+        <label htmlFor="userName" className="text-center mb-[20px]">
           Введіть своє ім’я чи нікнейм та спілкуйтесь без обмежень
           <input
             type="text"
@@ -42,10 +46,13 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
             autoFocus
             autoComplete="off"
             placeholder="Мій нікнейм"
-            className="border my-[20px] w-[40%] border-slate-950 rounded-lg"
+            className="border mt-[20px] w-[40%] border-slate-950 rounded-lg pl-4"
             value={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={handleInputChange}
           />
+          {!userNameValidation.isValid && (
+            <p className="text-xs text-red-600">{userNameValidation?.error}</p>
+          )}
         </label>
 
         <label htmlFor="rulesAcception">
@@ -68,14 +75,15 @@ export const AuthModal = ({ onClose, changeModal, setUser }) => {
         <button
           type="submit"
           className={`bg-black text-white my-[30px] p-2 rounded-lg cursor-pointer ${
-            areRulesAccepted && userName !== "" ? "opacity-100" : "opacity-30"
+            nameValidationRule ? "opacity-100" : "opacity-30"
           }`}
           title={
-            !areRulesAccepted || userName === ""
-              ? "Щоб приєднатися до чату, введіть, будь ласка, свій нік і погодьтеся з правилами"
-              : ""
+            !nameValidationRule
+              ? "Щоб приєднатися до чату, введіть, будь ласка, валідний нік і погодьтеся з правилами"
+              : "Перейти до чату"
           }
           onClick={handleClick}
+          disabled={!nameValidationRule}
         >
           Вперед до спілкування!
         </button>

@@ -7,6 +7,7 @@ import { UserContext } from "../context/users/userContext";
 import { OnlineUsersContext } from "../context/users/onlineUsersContext";
 import { BlackListUsersContext } from "../context/users/blacklistUsersContext";
 import { TypingUsersContext } from "../context/users/typingUsersContext";
+import { NotificationContext } from "../context/notification/notificationContext";
 
 
 export const useMessages = () => useContext(MessagesContext);
@@ -24,4 +25,7 @@ export const useOnlineUsers = () => useContext(OnlineUsersContext);
 export const useBlackListUsers = () => useContext(BlackListUsersContext);
 
 export const useTypingUsers = () => useContext(TypingUsersContext);
+
+export const useNotification = () => useContext(NotificationContext);
+
 

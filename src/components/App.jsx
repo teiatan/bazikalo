@@ -19,6 +19,7 @@ import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
+import { useNotification } from "../hooks/contextHooks";
 
 function App() {
   const [user, setUser] = useState(
@@ -200,6 +201,9 @@ function App() {
     });
   };
 
+  const notification = useNotification();
+  console.log(notification);
+
   return (
     <>
       <Header user={user} setOpenedModal={setOpenedModal} />
@@ -290,6 +294,7 @@ function App() {
             changeModal={setOpenedModal}
           />
         )}
+        {notification.NotificationMarkup}
       </div>
     </>
   );

@@ -7,6 +7,7 @@ import { BlackListUsersContextProvider } from "./users/blacklistUsersContext";
 import { OnlineUsersContextProvider } from "./users/onlineUsersContext";
 import { TypingUsersContextProvider } from "./users/typingUsersContext";
 import { UserContextProvider } from "./users/userContext";
+import { NotificationContextProvider } from "./notification/notificationContext";
 
 export function ContextProvider({ children }) {
   return (
@@ -17,7 +18,11 @@ export function ContextProvider({ children }) {
             <AllRoomsContextProvider>
               <ActiveRoomsContextProvider>
                 <CurrentRoomContextProvider>
-                  <MessagesContextProvider>{children}</MessagesContextProvider>
+                  <MessagesContextProvider>
+                    <NotificationContextProvider>
+                      {children}
+                    </NotificationContextProvider>
+                  </MessagesContextProvider>
                 </CurrentRoomContextProvider>
               </ActiveRoomsContextProvider>
             </AllRoomsContextProvider>

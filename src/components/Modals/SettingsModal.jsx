@@ -8,7 +8,9 @@ import { validateName } from "../../utils/nameValidation";
 // eslint-disable-next-line react/display-name
 export const SettingsModal = memo(({ onClose, user, setUser }) => {
   const [userName, setUserName] = useState(user.userName);
-  const [userNameValidation, setUserNameValidation] = useState("unknown");
+  const [userNameValidation, setUserNameValidation] = useState({
+    isValid: true,
+  });
   const [backgroundColor, setBackgroundColor] = useState(
     user.colors.background
   );

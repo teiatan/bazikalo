@@ -20,6 +20,7 @@ import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
 import { useNotification } from "../hooks/contextHooks";
+import { validateName } from "../utils/nameValidation";
 
 function App() {
   const [user, setUser] = useState(
@@ -202,7 +203,8 @@ function App() {
   };
 
   const notification = useNotification();
-  console.log(notification);
+  validateName("Ээээ").then((res) => console.log(res));
+  // console.log(validateName("Таня"));
 
   return (
     <>
@@ -294,6 +296,7 @@ function App() {
             changeModal={setOpenedModal}
           />
         )}
+
         {notification.NotificationMarkup}
       </div>
     </>

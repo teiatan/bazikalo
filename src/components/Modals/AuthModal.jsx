@@ -3,12 +3,13 @@ import { useState } from "react";
 import { ModalCover } from "./ModalCover";
 import { authenticate } from "../../api/ajaxRequests";
 import { validateName } from "../../utils/nameValidation";
+import { useUser } from "../../hooks/contextHooks";
 
-export const AuthModal = ({ onClose, changeModal, setUser }) => {
+export const AuthModal = ({ onClose, changeModal }) => {
   const [userName, setUserName] = useState("");
   const [userNameValidation, setUserNameValidation] = useState("unknown");
   const [areRulesAccepted, setAreRulesAccepted] = useState(false);
-
+  const {setUser} = useUser();
   const handleSubmit = async () => {
     const data = await authenticate(userName);
     setUser(data);

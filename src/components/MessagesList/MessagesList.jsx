@@ -1,9 +1,11 @@
 import { memo, useEffect, useRef } from "react";
 import { OneMessage } from "./OneMessage";
+import { useUser } from "../../hooks/contextHooks";
 
-export const MessagesList = memo(({ messages, user }) => {
+// eslint-disable-next-line react/display-name
+export const MessagesList = memo(({ messages }) => {
     const messagesRef = useRef(null);
-
+    const {user} = useUser();
     useEffect(() => {
         scrollToBottom();
     }, [messages]);

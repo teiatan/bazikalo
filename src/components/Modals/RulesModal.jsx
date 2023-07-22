@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 import { ModalCover } from "./ModalCover";
+import { useUser } from "../../hooks/contextHooks";
 
-export const RulesModal = ({ onClose, changeModal, user }) => {
+export const RulesModal = ({ onClose, changeModal }) => {
+  const {user} = useUser();
   const handleClose = () => {
     if (user._id === "" || user.userName === "") {
       changeModal("Auth");
@@ -11,7 +13,7 @@ export const RulesModal = ({ onClose, changeModal, user }) => {
   };
 
   return (
-    <ModalCover onClose={handleClose}>
+    <ModalCover onClose={handleClose} wrapperStyles={(user._id === "" || user.userName === "") && "bg-white"}>
       <div className="p-6">
         <h3 className="text-center font-bold mb-2">
           Правила перебування у чаті Базікало

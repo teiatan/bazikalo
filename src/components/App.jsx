@@ -19,21 +19,10 @@ import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
-import { useNotification } from "../hooks/contextHooks";
-import { validateName } from "../utils/nameValidation";
+import { useNotification, useUser } from "../hooks/contextHooks";
 
 function App() {
-  const [user, setUser] = useState(
-    () =>
-      JSON.parse(localStorage.getItem("user")) ?? {
-        userName: "",
-        _id: "",
-        colors: {
-          background: "#ffffff",
-          text: "#000000",
-        },
-      }
-  );
+  const { user, setUser } = useUser();
   const [messages, setMessages] = useState([...messagesArray]);
   const [currentRoom, setCurrentRoom] = useState(generalRoom);
   const [openedRooms, setOpenedRooms] = useState([generalRoom]);
@@ -58,9 +47,8 @@ function App() {
     }
     window.addEventListener("beforeunload", handleWindowBeforeUnload);
 
-    localStorage.setItem("user", JSON.stringify(user));
-
     socket.emit("userConnect", { ...user, status: "connected" });
+
   }, [user, handleWindowBeforeUnload]);
 
   useEffect(() => {
@@ -206,7 +194,7 @@ function App() {
 
   return (
     <>
-      <Header user={user} setOpenedModal={setOpenedModal} />
+      <Header setOpenedModal={setOpenedModal} />
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
@@ -249,7 +237,6 @@ function App() {
             messages={messages.filter(
               (message) => message.roomId === currentRoom._id
             )}
-            user={user}
             typing={typingUsers}
           />
           <MessageInput addNewMessage={addNewMessage} />
@@ -259,7 +246,6 @@ function App() {
           <AuthModal
             onClose={closeModal}
             changeModal={setOpenedModal}
-            setUser={setUser}
           />
         )}
         {openedModal === "AllRooms" && (
@@ -285,12 +271,11 @@ function App() {
           />
         )}
         {openedModal === "Settings" && (
-          <SettingsModal onClose={closeModal} user={user} setUser={setUser} />
+          <SettingsModal onClose={closeModal} />
         )}
         {openedModal === "Rules" && (
           <RulesModal
             onClose={closeModal}
-            user={user}
             changeModal={setOpenedModal}
           />
         )}

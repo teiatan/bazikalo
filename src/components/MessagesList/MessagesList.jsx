@@ -1,9 +1,11 @@
 import { memo, useEffect, useRef } from "react";
 import { OneMessage } from "./OneMessage";
-import { useUser } from "../../hooks/contextHooks";
+import { useCurrentRoom, useMessages, useUser } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
-export const MessagesList = memo(({ messages }) => {
+export const MessagesList = memo(() => {
+    const {currentRoom} = useCurrentRoom();
+    const messages = useMessages().messages.filter(message => message.roomId === currentRoom._id);
     const messagesRef = useRef(null);
     const {user} = useUser();
     useEffect(() => {

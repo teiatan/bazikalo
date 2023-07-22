@@ -14,8 +14,6 @@ import {
   openAvtiveRoomsWidth,
   closedAvtiveRoomsWidth,
 } from "../utils/variables";
-import { nanoid } from "nanoid";
-import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
@@ -24,7 +22,6 @@ import { useNotification, useOnlineUsers, useUser } from "../hooks/contextHooks"
 function App() {
   const { user } = useUser();
   const { onlineUsers } = useOnlineUsers();
-  const [messages, setMessages] = useState([...messagesArray]);
   const [currentRoom, setCurrentRoom] = useState(generalRoom);
   const [openedRooms, setOpenedRooms] = useState([generalRoom]);
   const [allRooms, setAllRooms] = useState([]);
@@ -32,7 +29,6 @@ function App() {
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
-  const [typingUsers, setTypingUsers] = useState([]);
   const [blackListUsers, setBlackListUsers] = useState(
     () => JSON.parse(localStorage.getItem("blackListUsers")) ?? []
   );
@@ -56,16 +52,6 @@ function App() {
   }, [blackListUsers]);
 
   useEffect(() => {
-    // отримання нових повідомлень
-    socket.on("messages", (message) => {
-      setMessages((prevMessages) => {
-        const index = prevMessages.findIndex((mes) => mes.id === message.id);
-        if (index === -1) {
-          return [...prevMessages, message];
-        }
-        return prevMessages;
-      });
-    });
 
     // отримання всіх кімнат
     socket.on("allRooms", (rooms) => {
@@ -83,24 +69,6 @@ function App() {
 
   const closeModal = () => {
     setOpenedModal("");
-  };
-
-  const addNewMessage = (messageText, messageUser = user, taggedUser) => {
-    const newMessageObject = {
-      id: nanoid(),
-      owner: messageUser,
-      content: messageText,
-      createdAt: new Date().toISOString(),
-      roomId: currentRoom._id,
-      tag: {
-        status: taggedUser ? true : false,
-        whom: {
-          _id: taggedUser?._id,
-          userName: taggedUser?._userName,
-        },
-      },
-    };
-    socket.emit("messages", newMessageObject);
   };
 
   const addToBlackList = (userDataObject) => {
@@ -185,7 +153,6 @@ function App() {
             setOpenedRooms={setOpenedRooms}
             currentRoom={currentRoom}
             setCurrentRoom={setCurrentRoom}
-            messages={messages}
             leaveRoom={leaveRoom}
             joinExistingRoom={joinExistingRoom}
           />
@@ -202,13 +169,8 @@ function App() {
         `}
         >
           <ToolBar roomName={currentRoom.name} type={currentRoom.type} />
-          <MessagesList
-            messages={messages.filter(
-              (message) => message.roomId === currentRoom._id
-            )}
-            typing={typingUsers}
-          />
-          <MessageInput addNewMessage={addNewMessage} />
+          <MessagesList />
+          <MessageInput />
         </div>
 
         {openedModal === "Auth" && (

@@ -1,8 +1,11 @@
 import PropTypes from "prop-types";
 import { RoomDropDownMenu } from "../Common/RoomDropDownMenu";
 import { useState } from "react";
+import { useCurrentRoom } from "../../hooks/contextHooks";
 
-export const ToolBar = ({ roomName, type }) => {
+export const ToolBar = () => {
+  const roomName = useCurrentRoom().name;
+  const type = useCurrentRoom().type;
   const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
 
   return (

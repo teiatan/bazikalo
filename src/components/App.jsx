@@ -17,21 +17,18 @@ import {
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
-import { useNotification, useOnlineUsers, useUser } from "../hooks/contextHooks";
+import { useActiveRooms, useAllRooms, useCurrentRoom, useNotification, useUser } from "../hooks/contextHooks";
 
 function App() {
   const { user } = useUser();
-  const { onlineUsers } = useOnlineUsers();
-  const [currentRoom, setCurrentRoom] = useState(generalRoom);
-  const [openedRooms, setOpenedRooms] = useState([generalRoom]);
-  const [allRooms, setAllRooms] = useState([]);
-  const [openedModal, setOpenedModal] = useState(
+  const { setCurrentRoom } = useCurrentRoom();
+  const { openedRooms, setOpenedRooms } = useActiveRooms();
+  const { setAllRooms } = useAllRooms();
+
+  const [ openedModal, setOpenedModal] = useState(
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
-  const [blackListUsers, setBlackListUsers] = useState(
-    () => JSON.parse(localStorage.getItem("blackListUsers")) ?? []
-  );
 
   const handleWindowBeforeUnload = useCallback(() => {
     socket.emit("userDisconnect", { ...user, status: "disconnected" });
@@ -48,11 +45,6 @@ function App() {
   }, [user, handleWindowBeforeUnload]);
 
   useEffect(() => {
-    localStorage.setItem("blackListUsers", JSON.stringify(blackListUsers));
-  }, [blackListUsers]);
-
-  useEffect(() => {
-
     // отримання всіх кімнат
     socket.on("allRooms", (rooms) => {
       setAllRooms(rooms);
@@ -65,26 +57,10 @@ function App() {
       });
       setOpenedRooms(refreshedOpenedRooms);
     });
-  }, [openedRooms]);
+  }, [openedRooms, setAllRooms, setOpenedRooms]);
 
   const closeModal = () => {
     setOpenedModal("");
-  };
-
-  const addToBlackList = (userDataObject) => {
-    setBlackListUsers((prev) => [...prev, userDataObject]);
-  };
-
-  const removeFromBlackList = (userDataObject) => {
-    const index = blackListUsers.findIndex(
-      (listUser) => listUser._id === userDataObject._id
-    );
-    if (index === -1) {
-      return;
-    } else {
-      const arr = onlineUsers.splice(index, 1);
-      setBlackListUsers(arr);
-    }
   };
 
   const leaveRoom = (roomId) => {
@@ -145,14 +121,9 @@ function App() {
         `}
         >
           <ActiveRooms
-            rooms={openedRooms}
             setAreActiveRoomsOpen={setAreActiveRoomsOpen}
             areActiveRoomsOpen={areActiveRoomsOpen}
             setOpenedModal={setOpenedModal}
-            openedRooms={openedRooms}
-            setOpenedRooms={setOpenedRooms}
-            currentRoom={currentRoom}
-            setCurrentRoom={setCurrentRoom}
             leaveRoom={leaveRoom}
             joinExistingRoom={joinExistingRoom}
           />
@@ -168,7 +139,7 @@ function App() {
           }
         `}
         >
-          <ToolBar roomName={currentRoom.name} type={currentRoom.type} />
+          <ToolBar />
           <MessagesList />
           <MessageInput />
         </div>
@@ -183,8 +154,6 @@ function App() {
           <AllRoomsModal
             setOpenedModal={setOpenedModal}
             onClose={closeModal}
-            allRooms={allRooms}
-            openedRooms={openedRooms}
             joinExistingRoom={joinExistingRoom}
           />
         )}
@@ -194,9 +163,6 @@ function App() {
         {openedModal === "OnlineUsers" && (
           <OnlineUsersModal
             onClose={closeModal}
-            blackListUsers={blackListUsers}
-            addToBlackList={addToBlackList}
-            removeFromBlackList={removeFromBlackList}
             addNewRoom={addNewRoom}
           />
         )}

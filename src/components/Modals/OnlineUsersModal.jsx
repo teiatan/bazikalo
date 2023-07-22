@@ -7,13 +7,13 @@ import { HiDotsVertical } from "react-icons/hi";
 import { BsSearch } from "react-icons/bs";
 import { PiChatsCircleBold } from "react-icons/pi";
 import { AiOutlineStop } from "react-icons/ai";
+import { useOnlineUsers } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
 export const OnlineUsersModal = memo(
   ({
     onClose,
     addNewRoom,
-    onlineUsers,
     blackListUsers,
     addToBlackList,
     removeFromBlackList
@@ -23,6 +23,7 @@ export const OnlineUsersModal = memo(
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);
     const timeoutRef = useRef(null);
     const inputRef = useRef(null);
+    const {onlineUsers} = useOnlineUsers();
 
     useEffect(() => {
       const timeoutId = setTimeout(() => {

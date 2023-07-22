@@ -19,10 +19,11 @@ import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
-import { useNotification, useUser } from "../hooks/contextHooks";
+import { useNotification, useOnlineUsers, useUser } from "../hooks/contextHooks";
 
 function App() {
-  const { user, setUser } = useUser();
+  const { user } = useUser();
+  const { onlineUsers } = useOnlineUsers();
   const [messages, setMessages] = useState([...messagesArray]);
   const [currentRoom, setCurrentRoom] = useState(generalRoom);
   const [openedRooms, setOpenedRooms] = useState([generalRoom]);
@@ -32,7 +33,6 @@ function App() {
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
   const [typingUsers, setTypingUsers] = useState([]);
-  const [onlineUsers, setOnlineUsers] = useState([]);
   const [blackListUsers, setBlackListUsers] = useState(
     () => JSON.parse(localStorage.getItem("blackListUsers")) ?? []
   );
@@ -67,37 +67,6 @@ function App() {
       });
     });
 
-    // отримання даних по користувачу, який доєднався
-    socket.on("userConnect", (user) => {
-      const index = onlineUsers.findIndex(
-        (presentUser) => presentUser._id === user._id
-      );
-      if (index === -1) {
-        setOnlineUsers((prev) => [...prev, user]);
-      } else {
-        const arr = onlineUsers.splice(index, 1, user);
-        setOnlineUsers(arr);
-      }
-    });
-
-    // отримання даних по користувачу, який покинув чат
-    socket.on("userDisconnect", (user) => {
-      const index = onlineUsers.findIndex(
-        (presentUser) => presentUser._id === user._id
-      );
-      if (index === -1) {
-        return;
-      } else {
-        const arr = onlineUsers.splice(index, 1);
-        setOnlineUsers(arr);
-      }
-    });
-
-    // отримання всіх користувачів онлайн
-    socket.on("onlineUsers", (users) => {
-      setOnlineUsers(users);
-    });
-
     // отримання всіх кімнат
     socket.on("allRooms", (rooms) => {
       setAllRooms(rooms);
@@ -110,7 +79,7 @@ function App() {
       });
       setOpenedRooms(refreshedOpenedRooms);
     });
-  }, [onlineUsers, openedRooms]);
+  }, [openedRooms]);
 
   const closeModal = () => {
     setOpenedModal("");
@@ -263,7 +232,6 @@ function App() {
         {openedModal === "OnlineUsers" && (
           <OnlineUsersModal
             onClose={closeModal}
-            onlineUsers={onlineUsers}
             blackListUsers={blackListUsers}
             addToBlackList={addToBlackList}
             removeFromBlackList={removeFromBlackList}

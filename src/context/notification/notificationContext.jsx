@@ -6,14 +6,15 @@ import { Notification } from "./Notification";
 export const NotificationContext = createContext();
 
 export const NotificationContextProvider = ({ children }) => {
-  const [isNotificationShown, setIsNotificationShown] = useState(false);
-  const [notificationSettings, setNotificationSettings] = useState({
+  const defaultNotificationSettings = {
     titleText: "title",
     descriptionText:
       "description description description description description description",
     firstButtonText: "cancel",
     secondButtonText: "ok",
-  });
+  };
+  const [isNotificationShown, setIsNotificationShown] = useState(false);
+  const [notificationSettings, setNotificationSettings] = useState(defaultNotificationSettings);
 
   const NotificationMarkup = isNotificationShown && (
     <Notification notificationSettings={notificationSettings} />
@@ -29,6 +30,7 @@ export const NotificationContextProvider = ({ children }) => {
 
   const hideNotification = () => {
     setIsNotificationShown(false);
+    setNotificationSettings(defaultNotificationSettings)
   };
 
   return (

@@ -80,7 +80,7 @@ export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
         <input
           ref={inputRef}
           type="text"
-          className="w-full px-4 py-2 border rounded"
+          className="w-full px-4 py-2 border rounded dark:bg-dkPrimaryBgC"
           placeholder="Введіть назву кімнати ..."
           value={roomName}
           onChange={handleRoomNameChange}

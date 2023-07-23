@@ -8,9 +8,11 @@ import { OnlineUsersContextProvider } from "./users/onlineUsersContext";
 import { TypingUsersContextProvider } from "./users/typingUsersContext";
 import { UserContextProvider } from "./users/userContext";
 import { NotificationContextProvider } from "./notification/notificationContext";
+import { ThemeContextProvider } from "./theme/themeContext";
 
 export function ContextProvider({ children }) {
   return (
+    <ThemeContextProvider>
     <UserContextProvider>
       <OnlineUsersContextProvider>
         <BlackListUsersContextProvider>
@@ -29,7 +31,8 @@ export function ContextProvider({ children }) {
           </TypingUsersContextProvider>
         </BlackListUsersContextProvider>
       </OnlineUsersContextProvider>
-    </UserContextProvider>
+      </UserContextProvider>
+      </ThemeContextProvider>
   );
 }
 

@@ -19,7 +19,7 @@ import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
-import { useNotification } from "../hooks/contextHooks";
+import { useNotification, useTheme } from "../hooks/contextHooks";
 import { validateName } from "../utils/nameValidation";
 
 function App() {
@@ -48,6 +48,7 @@ function App() {
     () => JSON.parse(localStorage.getItem("blackListUsers")) ?? []
   );
 
+  const { darkMode } = useTheme();
   const handleWindowBeforeUnload = useCallback(() => {
     socket.emit("userDisconnect", { ...user, status: "disconnected" });
   }, [user]);
@@ -66,6 +67,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem("blackListUsers", JSON.stringify(blackListUsers));
   }, [blackListUsers]);
+
+  useEffect(() => {
+    localStorage.setItem("mode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   useEffect(() => {
     // отримання нових повідомлень
@@ -205,8 +210,11 @@ function App() {
   const notification = useNotification();
 
   return (
-    <>
-      <Header user={user} setOpenedModal={setOpenedModal} />
+    <div className={`${darkMode ? "dark" : ""}`}>
+      <Header
+        user={user}
+        setOpenedModal={setOpenedModal}
+             />
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
@@ -216,7 +224,7 @@ function App() {
             areActiveRoomsOpen
               ? `w-[${openAvtiveRoomsWidth}]`
               : `w-[${closedAvtiveRoomsWidth}]`
-          }
+          } dark:bg-dkPrimaryBgC
         `}
         >
           <ActiveRooms
@@ -297,7 +305,7 @@ function App() {
 
         {notification.NotificationMarkup}
       </div>
-    </>
+    </div>
   );
 }
 

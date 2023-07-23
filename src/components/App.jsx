@@ -14,39 +14,22 @@ import {
   openAvtiveRoomsWidth,
   closedAvtiveRoomsWidth,
 } from "../utils/variables";
-import { nanoid } from "nanoid";
-import { messagesArray } from "../samples/messagesArray";
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
-import { useNotification, useTheme } from "../hooks/contextHooks";
+import { useActiveRooms, useAllRooms, useCurrentRoom, useModal, useNotification, useUser, useTheme } from "../hooks/contextHooks";
 import { validateName } from "../utils/nameValidation";
 
 function App() {
-  const [user, setUser] = useState(
-    () =>
-      JSON.parse(localStorage.getItem("user")) ?? {
-        userName: "",
-        _id: "",
-        colors: {
-          background: "#ffffff",
-          text: "#000000",
-        },
-      }
-  );
-  const [messages, setMessages] = useState([...messagesArray]);
-  const [currentRoom, setCurrentRoom] = useState(generalRoom);
-  const [openedRooms, setOpenedRooms] = useState([generalRoom]);
-  const [allRooms, setAllRooms] = useState([]);
-  const [openedModal, setOpenedModal] = useState(
+  const { user } = useUser();
+  const { setCurrentRoom } = useCurrentRoom();
+  const { openedRooms, setOpenedRooms } = useActiveRooms();
+  const { setAllRooms } = useAllRooms();
+
+  const [ openedModal, setOpenedModal] = useState(
     () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
-  const [typingUsers, setTypingUsers] = useState([]);
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [blackListUsers, setBlackListUsers] = useState(
-    () => JSON.parse(localStorage.getItem("blackListUsers")) ?? []
-  );
 
   const { darkMode } = useTheme();
   const handleWindowBeforeUnload = useCallback(() => {
@@ -59,61 +42,14 @@ function App() {
     }
     window.addEventListener("beforeunload", handleWindowBeforeUnload);
 
-    localStorage.setItem("user", JSON.stringify(user));
-
     socket.emit("userConnect", { ...user, status: "connected" });
-  }, [user, handleWindowBeforeUnload]);
 
-  useEffect(() => {
-    localStorage.setItem("blackListUsers", JSON.stringify(blackListUsers));
-  }, [blackListUsers]);
+  }, [user, handleWindowBeforeUnload]);
 
   useEffect(() => {
     localStorage.setItem("mode", JSON.stringify(darkMode));
   }, [darkMode]);
 
-  useEffect(() => {
-    // отримання нових повідомлень
-    socket.on("messages", (message) => {
-      setMessages((prevMessages) => {
-        const index = prevMessages.findIndex((mes) => mes.id === message.id);
-        if (index === -1) {
-          return [...prevMessages, message];
-        }
-        return prevMessages;
-      });
-    });
-
-    // отримання даних по користувачу, який доєднався
-    socket.on("userConnect", (user) => {
-      const index = onlineUsers.findIndex(
-        (presentUser) => presentUser._id === user._id
-      );
-      if (index === -1) {
-        setOnlineUsers((prev) => [...prev, user]);
-      } else {
-        const arr = onlineUsers.splice(index, 1, user);
-        setOnlineUsers(arr);
-      }
-    });
-
-    // отримання даних по користувачу, який покинув чат
-    socket.on("userDisconnect", (user) => {
-      const index = onlineUsers.findIndex(
-        (presentUser) => presentUser._id === user._id
-      );
-      if (index === -1) {
-        return;
-      } else {
-        const arr = onlineUsers.splice(index, 1);
-        setOnlineUsers(arr);
-      }
-    });
-
-    // отримання всіх користувачів онлайн
-    socket.on("onlineUsers", (users) => {
-      setOnlineUsers(users);
-    });
 
     // отримання всіх кімнат
     socket.on("allRooms", (rooms) => {
@@ -127,45 +63,7 @@ function App() {
       });
       setOpenedRooms(refreshedOpenedRooms);
     });
-  }, [onlineUsers, openedRooms]);
-
-  const closeModal = () => {
-    setOpenedModal("");
-  };
-
-  const addNewMessage = (messageText, messageUser = user, taggedUser) => {
-    const newMessageObject = {
-      id: nanoid(),
-      owner: messageUser,
-      content: messageText,
-      createdAt: new Date().toISOString(),
-      roomId: currentRoom._id,
-      tag: {
-        status: taggedUser ? true : false,
-        whom: {
-          _id: taggedUser?._id,
-          userName: taggedUser?._userName,
-        },
-      },
-    };
-    socket.emit("messages", newMessageObject);
-  };
-
-  const addToBlackList = (userDataObject) => {
-    setBlackListUsers((prev) => [...prev, userDataObject]);
-  };
-
-  const removeFromBlackList = (userDataObject) => {
-    const index = blackListUsers.findIndex(
-      (listUser) => listUser._id === userDataObject._id
-    );
-    if (index === -1) {
-      return;
-    } else {
-      const arr = onlineUsers.splice(index, 1);
-      setBlackListUsers(arr);
-    }
-  };
+  }, [openedRooms, setAllRooms, setOpenedRooms]);
 
   const leaveRoom = (roomId) => {
     setOpenedRooms((prev) => prev.filter((room) => room._id !== roomId));
@@ -208,13 +106,16 @@ function App() {
   };
 
   const notification = useNotification();
+  const modal = useModal();
 
   return (
+
     <div className={`${darkMode ? "dark" : ""}`}>
       <Header
         user={user}
         setOpenedModal={setOpenedModal}
              />
+
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
@@ -228,15 +129,8 @@ function App() {
         `}
         >
           <ActiveRooms
-            rooms={openedRooms}
             setAreActiveRoomsOpen={setAreActiveRoomsOpen}
             areActiveRoomsOpen={areActiveRoomsOpen}
-            setOpenedModal={setOpenedModal}
-            openedRooms={openedRooms}
-            setOpenedRooms={setOpenedRooms}
-            currentRoom={currentRoom}
-            setCurrentRoom={setCurrentRoom}
-            messages={messages}
             leaveRoom={leaveRoom}
             joinExistingRoom={joinExistingRoom}
           />
@@ -252,58 +146,14 @@ function App() {
           }
         `}
         >
-          <ToolBar roomName={currentRoom.name} type={currentRoom.type} />
-          <MessagesList
-            messages={messages.filter(
-              (message) => message.roomId === currentRoom._id
-            )}
-            user={user}
-            typing={typingUsers}
-          />
-          <MessageInput addNewMessage={addNewMessage} />
+          <ToolBar />
+          <MessagesList />
+          <MessageInput />
         </div>
 
-        {openedModal === "Auth" && (
-          <AuthModal
-            onClose={closeModal}
-            changeModal={setOpenedModal}
-            setUser={setUser}
-          />
-        )}
-        {openedModal === "AllRooms" && (
-          <AllRoomsModal
-            setOpenedModal={setOpenedModal}
-            onClose={closeModal}
-            allRooms={allRooms}
-            openedRooms={openedRooms}
-            joinExistingRoom={joinExistingRoom}
-          />
-        )}
-        {openedModal === "CreateNewRoom" && (
-          <CreateNewRoomModal onClose={closeModal} addNewRoom={addNewRoom} />
-        )}
-        {openedModal === "OnlineUsers" && (
-          <OnlineUsersModal
-            onClose={closeModal}
-            onlineUsers={onlineUsers}
-            blackListUsers={blackListUsers}
-            addToBlackList={addToBlackList}
-            removeFromBlackList={removeFromBlackList}
-            addNewRoom={addNewRoom}
-          />
-        )}
-        {openedModal === "Settings" && (
-          <SettingsModal onClose={closeModal} user={user} setUser={setUser} />
-        )}
-        {openedModal === "Rules" && (
-          <RulesModal
-            onClose={closeModal}
-            user={user}
-            changeModal={setOpenedModal}
-          />
-        )}
 
         {notification.NotificationMarkup}
+        {modal.ModalMarkup(joinExistingRoom, addNewRoom)}
       </div>
     </div>
   );

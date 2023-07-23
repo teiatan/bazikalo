@@ -9,6 +9,8 @@ import { TypingUsersContextProvider } from "./users/typingUsersContext";
 import { UserContextProvider } from "./users/userContext";
 import { NotificationContextProvider } from "./notification/notificationContext";
 import { ThemeContextProvider } from "./theme/themeContext";
+import { ModalContextProvider } from "./modal/modalContext";
+
 
 export function ContextProvider({ children }) {
   return (
@@ -22,7 +24,9 @@ export function ContextProvider({ children }) {
                 <CurrentRoomContextProvider>
                   <MessagesContextProvider>
                     <NotificationContextProvider>
-                      {children}
+                      <ModalContextProvider>
+                        {children}
+                      </ModalContextProvider>
                     </NotificationContextProvider>
                   </MessagesContextProvider>
                 </CurrentRoomContextProvider>

@@ -4,9 +4,12 @@ import PropTypes from "prop-types";
 import { ColorPicker } from "../Common/ColorPicker";
 import { updateUserSetting } from "../../api/ajaxRequests";
 import { validateName } from "../../utils/nameValidation";
+import { useModal, useUser } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
-export const SettingsModal = memo(({ onClose, user, setUser }) => {
+export const SettingsModal = memo(() => {
+  const onClose = useModal().closeModal;
+  const {user, setUser} = useUser();
   const [userName, setUserName] = useState(user.userName);
   const [userNameValidation, setUserNameValidation] = useState({
     isValid: true,

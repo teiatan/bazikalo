@@ -4,9 +4,11 @@ import { AiOutlinePaperClip } from "react-icons/ai";
 import { BiSmile } from "react-icons/bi";
 import { BsSend } from "react-icons/bs";
 import PropTypes from "prop-types";
+import { useMessages } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
-export const MessageInput = memo(({ addNewMessage }) => {
+export const MessageInput = memo(() => {
+  const { addNewMessage } = useMessages();
   const [message, setMessage] = useState("");
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
   const inputRef = useRef(null);

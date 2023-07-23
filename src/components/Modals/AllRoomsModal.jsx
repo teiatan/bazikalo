@@ -11,8 +11,14 @@ import { HiDotsVertical } from "react-icons/hi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
+import { useActiveRooms, useAllRooms, useModal } from "../../hooks/contextHooks";
 
-export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, allRooms, openedRooms }) => {
+// eslint-disable-next-line react/display-name
+export const AllRoomsModal = memo(({ joinExistingRoom }) => {
+    const setOpenedModal= useModal().setOpenedModal;
+    const onClose = useModal().closeModal;
+    const {allRooms} = useAllRooms();
+    const {openedRooms} = useActiveRooms();
     const [searchRoom, setSearchRoom] = useState('');
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);
@@ -66,7 +72,7 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
 
     useEffect(() => {
         setFilteredRooms(allRooms);
-    }, []);
+    }, [allRooms]);
 
     useEffect(() => {
         const filtered = allRooms.filter(({ name }) => (
@@ -74,7 +80,7 @@ export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom, 
         )
         );
         setFilteredRooms(filtered);
-    }, [searchRoom]);
+    }, [allRooms, searchRoom]);
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {

@@ -1,14 +1,18 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { UserNameDropDownMenu } from "./UserNameDropDownMenu";
-import { useTheme } from "../../hooks/contextHooks";
-
+import { useModal, useUser, useTheme } from "../../hooks/contextHooks";
+import { ExitButton } from "../Common/ExitButton";
 import { SvgSelector } from "../Common/SvgSelector";
 import { SwitchButtonTheme } from "../Common/SwitchButtonTheme";
 
-export const Header = ({ user, setOpenedModal }) => {
+export const Header = () => {
+  const { setOpenedModal } = useModal();
   const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
+
 const { toggleDarkMode } = useTheme();
+  const {user} = useUser();
+
   const handleDropdownMenuClick = (modalName) => {
     setOpenedModal(modalName);
     setIsDropDownMenuOpen(false);
@@ -56,6 +60,8 @@ const { toggleDarkMode } = useTheme();
               />
             </div>
           )}
+
+          {user && <ExitButton />}
         </div>
       </div>
     </div>

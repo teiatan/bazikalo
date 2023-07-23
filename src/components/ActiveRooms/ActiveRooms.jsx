@@ -8,17 +8,17 @@ import {
   BsFillArrowLeftCircleFill,
 } from "react-icons/bs";
 import { IoAccessibilitySharp } from "react-icons/io5";
+import { useActiveRooms, useCurrentRoom, useMessages, useModal } from "../../hooks/contextHooks";
 
 export const ActiveRooms = ({
-  rooms,
   areActiveRoomsOpen,
   setAreActiveRoomsOpen,
-  setOpenedModal,
-  messages,
-  currentRoom,
-  setCurrentRoom,
   leaveRoom,
 }) => {
+  const { setOpenedModal } = useModal();
+  const {messages} = useMessages();
+  const {currentRoom, setCurrentRoom} = useCurrentRoom();
+  const rooms = useActiveRooms().openedRooms;
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="relative">

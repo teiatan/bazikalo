@@ -7,22 +7,21 @@ import { HiDotsVertical } from "react-icons/hi";
 import { BsSearch } from "react-icons/bs";
 import { PiChatsCircleBold } from "react-icons/pi";
 import { AiOutlineStop } from "react-icons/ai";
+import { useBlackListUsers, useModal, useOnlineUsers } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
 export const OnlineUsersModal = memo(
   ({
-    onClose,
-    addNewRoom,
-    onlineUsers,
-    blackListUsers,
-    addToBlackList,
-    removeFromBlackList
+    addNewRoom
   }) => {
+    const onClose = useModal().closeModal;
     const [searchUserOnline, setsearchUserOnline] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);
     const timeoutRef = useRef(null);
     const inputRef = useRef(null);
+    const {onlineUsers} = useOnlineUsers();
+    const { blackListUsers, addToBlackList, removeFromBlackList } = useBlackListUsers();
 
     useEffect(() => {
       const timeoutId = setTimeout(() => {
@@ -43,7 +42,7 @@ export const OnlineUsersModal = memo(
         user.userName.toLowerCase().includes(searchUserOnline.toLowerCase())
       );
       setFilteredUsers(filtered);
-    }, [searchUserOnline]);
+    }, [onlineUsers, searchUserOnline]);
 
     const onChangeHandler = (event) => {
       setsearchUserOnline(event.target.value);

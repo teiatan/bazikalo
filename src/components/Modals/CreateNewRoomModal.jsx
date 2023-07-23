@@ -1,8 +1,10 @@
 import { memo, useState, useEffect, useRef } from "react";
 import { ModalCover } from "./ModalCover";
 import { BsEyeSlash } from "react-icons/bs";
+import { useModal } from "../../hooks/contextHooks";
 
-export const CreateNewRoomModal = memo(({ onClose, addNewRoom }) => {
+export const CreateNewRoomModal = memo(({ addNewRoom }) => {
+  const onClose = useModal().closeModal;
   const [roomName, setRoomName] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#000000");
   const [textColor, setTextColor] = useState("#ffffff");

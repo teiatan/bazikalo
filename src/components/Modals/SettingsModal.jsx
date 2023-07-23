@@ -4,10 +4,12 @@ import PropTypes from "prop-types";
 import { ColorPicker } from "../Common/ColorPicker";
 import { updateUserSetting } from "../../api/ajaxRequests";
 import { validateName } from "../../utils/nameValidation";
-import { useUser } from "../../hooks/contextHooks";
+import { useModal, useUser } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
-export const SettingsModal = memo(({ onClose }) => {
+export const SettingsModal = memo(() => {
+  const onClose = useModal().closeModal;
+  const {user, setUser} = useUser();
   const [userName, setUserName] = useState(user.userName);
   const [userNameValidation, setUserNameValidation] = useState({
     isValid: true,
@@ -17,7 +19,6 @@ export const SettingsModal = memo(({ onClose }) => {
   );
   const [textColor, setTextColor] = useState(user.colors.text);
   const inputRef = useRef(null);
-  const {user, setUser} = useUser();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

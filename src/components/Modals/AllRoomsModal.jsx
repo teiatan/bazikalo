@@ -11,10 +11,12 @@ import { HiDotsVertical } from "react-icons/hi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
-import { useActiveRooms, useAllRooms } from "../../hooks/contextHooks";
+import { useActiveRooms, useAllRooms, useModal } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
-export const AllRoomsModal = memo(({ onClose, setOpenedModal, joinExistingRoom }) => {
+export const AllRoomsModal = memo(({ joinExistingRoom }) => {
+    const setOpenedModal= useModal().setOpenedModal;
+    const onClose = useModal().closeModal;
     const {allRooms} = useAllRooms();
     const {openedRooms} = useActiveRooms();
     const [searchRoom, setSearchRoom] = useState('');

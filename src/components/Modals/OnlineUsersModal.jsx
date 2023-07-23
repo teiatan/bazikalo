@@ -7,14 +7,14 @@ import { HiDotsVertical } from "react-icons/hi";
 import { BsSearch } from "react-icons/bs";
 import { PiChatsCircleBold } from "react-icons/pi";
 import { AiOutlineStop } from "react-icons/ai";
-import { useBlackListUsers, useOnlineUsers } from "../../hooks/contextHooks";
+import { useBlackListUsers, useModal, useOnlineUsers } from "../../hooks/contextHooks";
 
 // eslint-disable-next-line react/display-name
 export const OnlineUsersModal = memo(
   ({
-    onClose,
     addNewRoom
   }) => {
+    const onClose = useModal().closeModal;
     const [searchUserOnline, setsearchUserOnline] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [openDropDownIndex, setOpenDropDownIndex] = useState(null);

@@ -17,7 +17,7 @@ import {
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
-import { useActiveRooms, useAllRooms, useCurrentRoom, useNotification, useUser } from "../hooks/contextHooks";
+import { useActiveRooms, useAllRooms, useCurrentRoom, useModal, useNotification, useUser } from "../hooks/contextHooks";
 
 function App() {
   const { user } = useUser();
@@ -58,10 +58,6 @@ function App() {
       setOpenedRooms(refreshedOpenedRooms);
     });
   }, [openedRooms, setAllRooms, setOpenedRooms]);
-
-  const closeModal = () => {
-    setOpenedModal("");
-  };
 
   const leaveRoom = (roomId) => {
     setOpenedRooms((prev) => prev.filter((room) => room._id !== roomId));
@@ -104,10 +100,11 @@ function App() {
   };
 
   const notification = useNotification();
+  const modal = useModal();
 
   return (
     <>
-      <Header setOpenedModal={setOpenedModal} />
+      <Header />
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
@@ -123,7 +120,6 @@ function App() {
           <ActiveRooms
             setAreActiveRoomsOpen={setAreActiveRoomsOpen}
             areActiveRoomsOpen={areActiveRoomsOpen}
-            setOpenedModal={setOpenedModal}
             leaveRoom={leaveRoom}
             joinExistingRoom={joinExistingRoom}
           />
@@ -144,39 +140,9 @@ function App() {
           <MessageInput />
         </div>
 
-        {openedModal === "Auth" && (
-          <AuthModal
-            onClose={closeModal}
-            changeModal={setOpenedModal}
-          />
-        )}
-        {openedModal === "AllRooms" && (
-          <AllRoomsModal
-            setOpenedModal={setOpenedModal}
-            onClose={closeModal}
-            joinExistingRoom={joinExistingRoom}
-          />
-        )}
-        {openedModal === "CreateNewRoom" && (
-          <CreateNewRoomModal onClose={closeModal} addNewRoom={addNewRoom} />
-        )}
-        {openedModal === "OnlineUsers" && (
-          <OnlineUsersModal
-            onClose={closeModal}
-            addNewRoom={addNewRoom}
-          />
-        )}
-        {openedModal === "Settings" && (
-          <SettingsModal onClose={closeModal} />
-        )}
-        {openedModal === "Rules" && (
-          <RulesModal
-            onClose={closeModal}
-            changeModal={setOpenedModal}
-          />
-        )}
 
         {notification.NotificationMarkup}
+        {modal.ModalMarkup(joinExistingRoom, addNewRoom)}
       </div>
     </>
   );

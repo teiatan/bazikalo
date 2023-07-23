@@ -1,10 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { UserNameDropDownMenu } from "./UserNameDropDownMenu";
-import { useUser } from "../../hooks/contextHooks";
+import { useModal, useUser } from "../../hooks/contextHooks";
 import { ExitButton } from "../Common/ExitButton";
 
-export const Header = ({ setOpenedModal }) => {
+export const Header = () => {
+  const { setOpenedModal } = useModal();
   const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
   const {user} = useUser();
 

@@ -1,14 +1,16 @@
 import PropTypes from "prop-types";
 import { ImExit } from "react-icons/im";
-import { useNotification, useUser } from "../../hooks/contextHooks";
+import { useModal, useNotification, useUser } from "../../hooks/contextHooks";
 import { lostDataNotificationSettings } from "../../utils/notificationSettings";
 
 export const ExitButton = () => {
   const {showNotification, hideNotification} = useNotification();
   const {exitUser}=useUser();
+  const { setOpenedModal } = useModal();
   const leaveChat = () => {
     exitUser();
     hideNotification();
+    setOpenedModal("Auth")
   }
 
   return (

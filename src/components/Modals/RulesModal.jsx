@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import { ModalCover } from "./ModalCover";
-import { useUser } from "../../hooks/contextHooks";
+import { useModal, useUser } from "../../hooks/contextHooks";
 
-export const RulesModal = ({ onClose, changeModal }) => {
+export const RulesModal = () => {
+  const onClose = useModal().closeModal;
+  const changeModal = useModal().setOpenedModal;
   const {user} = useUser();
   const handleClose = () => {
     if (user._id === "" || user.userName === "") {

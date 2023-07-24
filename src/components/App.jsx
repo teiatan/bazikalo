@@ -17,7 +17,8 @@ import {
 import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
-import { useActiveRooms, useAllRooms, useCurrentRoom, useModal, useNotification, useUser } from "../hooks/contextHooks";
+import { useActiveRooms, useAllRooms, useCurrentRoom, useModal, useNotification, useUser, useTheme } from "../hooks/contextHooks";
+import { validateName } from "../utils/nameValidation";
 
 function App() {
   const { user } = useUser();
@@ -30,6 +31,7 @@ function App() {
   );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
 
+  const { darkMode } = useTheme();
   const handleWindowBeforeUnload = useCallback(() => {
     socket.emit("userDisconnect", { ...user, status: "disconnected" });
   }, [user]);
@@ -44,7 +46,9 @@ function App() {
 
   }, [user, handleWindowBeforeUnload]);
 
-  useEffect(() => {
+ 
+
+
     // отримання всіх кімнат
     socket.on("allRooms", (rooms) => {
       setAllRooms(rooms);
@@ -57,7 +61,7 @@ function App() {
       });
       setOpenedRooms(refreshedOpenedRooms);
     });
-  }, [openedRooms, setAllRooms, setOpenedRooms]);
+
 
   const leaveRoom = (roomId) => {
     setOpenedRooms((prev) => prev.filter((room) => room._id !== roomId));
@@ -103,8 +107,13 @@ function App() {
   const modal = useModal();
 
   return (
-    <>
-      <Header />
+
+    <div className={`${darkMode ? "dark" : ""}`}>
+      <Header
+        user={user}
+        setOpenedModal={setOpenedModal}
+             />
+
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
@@ -114,7 +123,7 @@ function App() {
             areActiveRoomsOpen
               ? `w-[${openAvtiveRoomsWidth}]`
               : `w-[${closedAvtiveRoomsWidth}]`
-          }
+          } dark:bg-dkPrimaryBgC
         `}
         >
           <ActiveRooms
@@ -144,7 +153,7 @@ function App() {
         {notification.NotificationMarkup}
         {modal.ModalMarkup(joinExistingRoom, addNewRoom)}
       </div>
-    </>
+    </div>
   );
 }
 

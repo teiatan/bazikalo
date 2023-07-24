@@ -1,12 +1,15 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { UserNameDropDownMenu } from "./UserNameDropDownMenu";
-import { useModal, useUser } from "../../hooks/contextHooks";
+import { useModal, useUser, useTheme } from "../../hooks/contextHooks";
 import { ExitButton } from "../Common/ExitButton";
+import { SwitchButtonTheme } from "../Common/SwitchButtonTheme";
 
 export const Header = () => {
   const { setOpenedModal } = useModal();
   const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
+
+const { toggleDarkMode } = useTheme();
   const {user} = useUser();
 
   const handleDropdownMenuClick = (modalName) => {
@@ -15,13 +18,13 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed w-screen h-[80px] z-10 bg-[#D9D9D9] text-2xl">
+    <div className="fixed w-screen h-[80px] z-10 bg-dkPrimaryTextC text-2xl dark:bg-dkGeneralBgC">
       <div className="h-full flex items-center justify-between m-auto">
         <div className="w-[345px] text-center">LOGO</div>
 
         <div className="mr-[100px] flex gap-[30px] relative">
-          <button className="rounded-full bg-white p-2">Theme button</button>
-
+         <SwitchButtonTheme />
+          
           {user.userName === "" ? (
             <button className="min-w-[223px]">UA/ENG</button>
           ) : (

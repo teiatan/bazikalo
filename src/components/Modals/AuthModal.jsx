@@ -49,7 +49,7 @@ export const AuthModal = () => {
             autoFocus
             autoComplete="off"
             placeholder="Мій нікнейм"
-            className="border mt-[20px] w-[40%] border-slate-950 rounded-lg pl-4"
+            className="border mt-[20px] w-[40%] border-slate-950 rounded-lg pl-4 dark:bg-dkPrimaryBgC"
             value={userName}
             onChange={handleInputChange}
           />

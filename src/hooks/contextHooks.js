@@ -8,7 +8,9 @@ import { OnlineUsersContext } from "../context/users/onlineUsersContext";
 import { BlackListUsersContext } from "../context/users/blacklistUsersContext";
 import { TypingUsersContext } from "../context/users/typingUsersContext";
 import { NotificationContext } from "../context/notification/notificationContext";
+import { ThemeContext } from "../context/theme/themeContext";
 import { ModalContext } from "../context/modal/modalContext";
+
 
 
 export const useMessages = () => useContext(MessagesContext);
@@ -29,7 +31,10 @@ export const useTypingUsers = () => useContext(TypingUsersContext);
 
 export const useNotification = () => useContext(NotificationContext);
 
+export const useTheme = () => useContext(ThemeContext);
+
 export const useModal = () => useContext(ModalContext);
+
 
 
 

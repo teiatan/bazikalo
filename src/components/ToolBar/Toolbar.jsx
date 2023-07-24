@@ -9,7 +9,7 @@ export const ToolBar = () => {
   const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
 
   return (
-    <div className="border flex justify-between items-center p-4 relative">
+    <div className="border flex justify-between items-center p-4 relative dark:bg-dkPrimaryBgC">
       <h2>{roomName}</h2>
       <button
         type="button"

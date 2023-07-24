@@ -79,7 +79,7 @@ export const SettingsModal = memo(() => {
               <input
                 ref={inputRef}
                 type="text"
-                className="w-full px-4 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded dark:bg-dkPrimaryBgC"
                 placeholder="Введіть ваш нікнейм ..."
                 value={userName}
                 onChange={handleNameChange}
@@ -92,7 +92,7 @@ export const SettingsModal = memo(() => {
             </label>
 
             <div className="flex items-center justify-between">
-              <div className="flex flex-col min-w-[150px]">
+              <div className="flex flex-col min-w-[150px] ">
                 <div className="flex items-center justify-between">
                   <ColorPicker
                     name="Колір фону"

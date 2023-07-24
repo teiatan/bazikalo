@@ -65,14 +65,14 @@ export const MessageInput = memo(() => {
   };
 
   return (
-    <div className="border flex items-center relative">
+    <div className="border flex items-center relative dark:bg-dkPrimaryBgC">
       <input
         ref={inputRef}
         type="text"
         onChange={onChangeHandler}
         value={message}
         onKeyDown={handleKeyDown}
-        className="w-full px-4 py-2 border rounded"
+        className="w-full px-4 py-2 border rounded dark:bg-dkGeneralBgC "
         placeholder="Type text ..."
       />
       {emojiPickerVisible && (

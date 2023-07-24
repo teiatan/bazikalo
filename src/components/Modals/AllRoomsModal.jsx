@@ -170,7 +170,7 @@ export const AllRoomsModal = memo(({ joinExistingRoom }) => {
                         type="text"
                         onChange={onChangeHandler}
                         value={searchRoom}
-                        className="w-full px-4 py-2 border rounded mb-2"
+                        className="w-full px-4 py-2 border rounded mb-2 dark:bg-dkPrimaryBgC"
                         placeholder="Пошук кімнати"
                     />
                     <BsSearch className="absolute top-[12px] right-[15px]" />

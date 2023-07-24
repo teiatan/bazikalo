@@ -46,9 +46,7 @@ function App() {
 
   }, [user, handleWindowBeforeUnload]);
 
-  useEffect(() => {
-    localStorage.setItem("mode", JSON.stringify(darkMode));
-  }, [darkMode]);
+ 
 
 
     // отримання всіх кімнат
@@ -63,7 +61,7 @@ function App() {
       });
       setOpenedRooms(refreshedOpenedRooms);
     });
-  }, [openedRooms, setAllRooms, setOpenedRooms]);
+
 
   const leaveRoom = (roomId) => {
     setOpenedRooms((prev) => prev.filter((room) => room._id !== roomId));

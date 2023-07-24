@@ -7,7 +7,7 @@ export default {
       //Background
       dkGeneralBgC: "#1A1A1A",
       dkPrimaryBgC: "#2A2133",
-      dSecondaryBgC: "#D1A5FF",
+      dkSecondaryBgC: "#D1A5FF",
       dkDisabledButtonBgC: "#454545",
       dkButtonBgC: "#E7FD5D",
       dkBackdropC: "rgba(26, 26, 26, 0.8)",

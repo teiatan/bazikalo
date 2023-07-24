@@ -8,7 +8,7 @@ export const SwitchButtonTheme = () => {
         
       <label
         className="relative inline-block w-[84px] h-10 rounded-[20px] 
-       bg-gradient-to-r from-dSecondaryBgC from-0% to-ltSecondaryGradient to-100% dark:bg-gradient-to-[44deg] dark:from-dkGeneralBgC dark:from-0% dark:to-dkSecondaryGradient dark:to-100%"
+       bg-gradient-to-r from-dkSecondaryBgC from-0% to-ltSecondaryGradient to-100% dark:bg-gradient-to-[44deg] dark:from-dkGeneralBgC dark:from-0% dark:to-dkSecondaryGradient dark:to-100%"
       >
         
         <input
@@ -36,4 +36,3 @@ export const SwitchButtonTheme = () => {
   );
 };
 
-//   <button className="rounded-full bg-white p-2 dark:bg-gray-800 text-zinc-50" onClick={toggleDarkMode}>Theme button</button>

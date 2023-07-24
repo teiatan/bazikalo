@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { UserNameDropDownMenu } from "./UserNameDropDownMenu";
 import { useModal, useUser, useTheme } from "../../hooks/contextHooks";
 import { ExitButton } from "../Common/ExitButton";
-import { SvgSelector } from "../Common/SvgSelector";
 import { SwitchButtonTheme } from "../Common/SwitchButtonTheme";
 
 export const Header = () => {
@@ -25,8 +24,7 @@ const { toggleDarkMode } = useTheme();
 
         <div className="mr-[100px] flex gap-[30px] relative">
          <SwitchButtonTheme />
-          <button className="rounded-full bg-white p-2 dark:bg-gray-800 text-zinc-50" onClick={toggleDarkMode}>Theme button</button>
-
+          
           {user.userName === "" ? (
             <button className="min-w-[223px]">UA/ENG</button>
           ) : (

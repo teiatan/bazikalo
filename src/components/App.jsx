@@ -21,7 +21,7 @@ function App() {
   const { openedRooms, setOpenedRooms } = useActiveRooms();
   const { setAllRooms } = useAllRooms();
 
-  const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
+  const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(true);
 
   const handleWindowBeforeUnload = useCallback(() => {
     socket.emit("userDisconnect", { ...user, status: "disconnected" });
@@ -43,9 +43,9 @@ function App() {
       //оновлення відкритих кімнат
       const refreshedOpenedRooms = openedRooms.map((room) => {
         const indexInAll = rooms.findIndex(
-          (refreshedRoom) => refreshedRoom._id === room._id
+          (refreshedRoom) => refreshedRoom?._id === room?._id
         );
-        return rooms[indexInAll];
+        return indexInAll=== -1 ? room : rooms[indexInAll];
       });
       setOpenedRooms(refreshedOpenedRooms);
     });

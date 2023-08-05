@@ -2,7 +2,7 @@ import { user1, user2, user3, user4 } from "./users"
 
 export const activeRooms = [
     {
-        id: '64a99b9d5dca528b9636b96b',
+        id: '64ceb9912b7260dd6bcd5ae6',
         name: 'General',
         activeUsers: [
             user1,
@@ -49,7 +49,7 @@ export const activeRooms = [
 
 export const generalRoom = {
     name: "general",
-    _id: "64a99b9d5dca528b9636b96b",
+    _id: "64ceb9912b7260dd6bcd5ae6",
     activeUsers: [],
     type: "group",
     colors: {

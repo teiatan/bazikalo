@@ -18,7 +18,7 @@ export const ActiveRooms = ({
   const {currentRoom, setCurrentRoom} = useCurrentRoom();
   const rooms = useActiveRooms().openedRooms;
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col justify-between h-full text-dkPrimaryTextC">
       <div className="relative">
         {areActiveRoomsOpen && <h2 className="text-center">Активні кімнати</h2>}
         {/* {areActiveRoomsOpen && <SearchForm placeholder={"Пошук кімнат..."} />} */}
@@ -42,25 +42,24 @@ export const ActiveRooms = ({
         )}
 
         {rooms.map((room) => {
-          const { _id, name, activeUsers, type } = room;
           const thisRoomMessages = messages.filter(
-            (message) => message.roomId === _id
+            (message) => message.roomId === room?._id
           );
           const lastMessage =
             thisRoomMessages[thisRoomMessages.length - 1]?.content;
           return (
             <div
-              key={_id}
+              key={room?._id}
               onClick={() => setCurrentRoom(room)}
-              className={currentRoom._id === _id ? "bg-[#D9D9D9]" : ""}
+              className={currentRoom._id === room?._id ? `bg-dkGeneralBgC border rounded-xl border-dkPrimaryBorderC` : ""}
             >
               <OneActiveRoom
-                id={_id}
+                id={room?._id}
                 name={name}
-                amountOfActiveUsers={activeUsers.length}
+                amountOfActiveUsers={room?.activeUsers.length}
                 lastMessage={lastMessage}
                 areActiveRoomsOpen={areActiveRoomsOpen}
-                type={type}
+                type={room?.type}
                 leaveRoom={leaveRoom}
               />
             </div>
@@ -68,6 +67,7 @@ export const ActiveRooms = ({
         })}
       </div>
 
+      {areActiveRoomsOpen && <>
       <div className="flex flex-col gap-[5px]">
         <button onClick={() => setOpenedModal("AllRooms")}>
           {areActiveRoomsOpen ? (
@@ -93,6 +93,7 @@ export const ActiveRooms = ({
           {areActiveRoomsOpen ? "створити кімнату +" : "+"}
         </button>
       </div>
+      </>}
     </div>
   );
 };

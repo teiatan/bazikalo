@@ -2,10 +2,15 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sans': ['Comfortaa'],
+      },
+    },
     colors: {
       //Background
       dkGeneralBgC: "#1A1A1A",
+      GeneralBgC: "#F3F5F9",
       dkPrimaryBgC: "#2A2133",
       dkSecondaryBgC: "#D1A5FF",
       dkDisabledButtonBgC: "#454545",

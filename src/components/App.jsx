@@ -1,14 +1,8 @@
 import { ActiveRooms } from "./ActiveRooms/ActiveRooms";
 import { MessagesList } from "./MessagesList/MessagesList";
-import { AllRoomsModal } from "./Modals/AllRoomsModal";
-import { AuthModal } from "./Modals/AuthModal";
-import { CreateNewRoomModal } from "./Modals/CreateNewRoomModal";
-import { OnlineUsersModal } from "./Modals/OnlineUsersModal";
-import { SettingsModal } from "./Modals/SettingsModal";
 import { MessageInput } from "./MessageInput/MessageInput";
 import { ToolBar } from "./ToolBar/Toolbar";
 import { useCallback, useEffect, useState } from "react";
-import { RulesModal } from "./Modals/RulesModal";
 import { Header } from "./Header/Header";
 import {
   openAvtiveRoomsWidth,
@@ -18,20 +12,17 @@ import { socket } from "../api/socket";
 import { generalRoom } from "../samples/activeRooms";
 import { createNewRoom, joinRoom, leaveNewRoom } from "../api/ajaxRequests";
 import { useActiveRooms, useAllRooms, useCurrentRoom, useModal, useNotification, useUser, useTheme } from "../hooks/contextHooks";
-import { validateName } from "../utils/nameValidation";
+
 
 function App() {
+  const { darkMode } = useTheme();
   const { user } = useUser();
   const { setCurrentRoom } = useCurrentRoom();
   const { openedRooms, setOpenedRooms } = useActiveRooms();
   const { setAllRooms } = useAllRooms();
 
-  const [ openedModal, setOpenedModal] = useState(
-    () => JSON.parse(localStorage.getItem("user")) ?? "Auth"
-  );
   const [areActiveRoomsOpen, setAreActiveRoomsOpen] = useState(false);
 
-  const { darkMode } = useTheme();
   const handleWindowBeforeUnload = useCallback(() => {
     socket.emit("userDisconnect", { ...user, status: "disconnected" });
   }, [user]);
@@ -45,9 +36,6 @@ function App() {
     socket.emit("userConnect", { ...user, status: "connected" });
 
   }, [user, handleWindowBeforeUnload]);
-
- 
-
 
     // отримання всіх кімнат
     socket.on("allRooms", (rooms) => {
@@ -109,11 +97,7 @@ function App() {
   return (
 
     <div className={`${darkMode ? "dark" : ""}`}>
-      <Header
-        user={user}
-        setOpenedModal={setOpenedModal}
-             />
-
+      <Header />
 
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
@@ -130,7 +114,6 @@ function App() {
             setAreActiveRoomsOpen={setAreActiveRoomsOpen}
             areActiveRoomsOpen={areActiveRoomsOpen}
             leaveRoom={leaveRoom}
-            joinExistingRoom={joinExistingRoom}
           />
         </div>
 

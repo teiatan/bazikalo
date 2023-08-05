@@ -26,7 +26,7 @@ const { toggleDarkMode } = useTheme();
          <SwitchButtonTheme />
           
           {user.userName === "" ? (
-            <button className="min-w-[223px]">UA/ENG</button>
+            <>{/* <button className="min-w-[223px]">UA/ENG</button> */}</>
           ) : (
             <button
               onClick={() => setIsDropDownMenuOpen(!isDropDownMenuOpen)}
@@ -59,7 +59,7 @@ const { toggleDarkMode } = useTheme();
             </div>
           )}
 
-          {user && <ExitButton />}
+          {user?.userName !== "" && <ExitButton />}
         </div>
       </div>
     </div>

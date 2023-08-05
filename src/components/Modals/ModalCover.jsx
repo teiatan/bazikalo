@@ -29,10 +29,10 @@ export const ModalCover = ({
   return (
     <div
       onMouseDown={handleWrapperClick}
-      className={`fixed w-screen h-screen flex justify-center items-center bg-sky-900/50 ${wrapperStyles} dark:bg-dkBackdropC`}
+      className={`fixed w-screen h-screen flex justify-center items-center ${wrapperStyles}`}
     >
       <div
-        className={`w-[700px] h-[500px] relative flex justify-center items-center ${containerStyles} dark:bg-dkPrimaryBgC`}
+        className={`w-[700px] h-[500px] relative flex justify-center items-center ${containerStyles}`}
       >
         <button
           onClick={onClose}

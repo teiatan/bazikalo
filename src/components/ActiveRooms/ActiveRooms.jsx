@@ -1,6 +1,4 @@
-import { activeRooms } from "../../samples/activeRooms";
 import { OneActiveRoom } from "./OneActiveRoom";
-import { SearchForm } from "../Common/SearchForm";
 import { FilterRooms } from "./FilterRooms";
 import { PiMagnifyingGlassBold } from "react-icons/pi";
 import {

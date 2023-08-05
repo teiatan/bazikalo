@@ -7,15 +7,25 @@ export const ExitButton = () => {
   const {showNotification, hideNotification} = useNotification();
   const {exitUser}=useUser();
   const { setOpenedModal } = useModal();
+
   const leaveChat = () => {
     exitUser();
     hideNotification();
-    setOpenedModal("Auth")
+    setOpenedModal("Auth");
+    localStorage.removeItem("user");
+  }
+
+  const handleClick = () => {
+    showNotification({
+      ...lostDataNotificationSettings, 
+      firstButtonFunction: leaveChat,
+      secondButtonFunction: hideNotification
+    })
   }
 
   return (
-    <button type="button" title="покинути чат" onClick={()=>showNotification({...lostDataNotificationSettings, firstButtonFunction: leaveChat,
-      secondButtonFunction:hideNotification})}>
+    <button type="button" title="покинути чат" 
+    onClick={handleClick}>
       <ImExit />
     </button>
   );

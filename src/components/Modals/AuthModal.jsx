@@ -34,8 +34,8 @@ export const AuthModal = () => {
   return (
     <ModalCover
       buttonStyles="hidden"
-      wrapperStyles="bg-white"
-      containerStyles="bg-white"
+      wrapperStyles="bg-GeneralBgC dark:bg-dkGeneralBgC"
+      containerStyles="bg-GeneralBgC dark:bg-dkGeneralBgC"
     >
       <form className="h-full flex flex-col justify-center items-center p-4 text-lg">
         <h2 className="text-3xl">Вітаємо у чаті Базікало!</h2>
@@ -49,7 +49,7 @@ export const AuthModal = () => {
             autoFocus
             autoComplete="off"
             placeholder="Мій нікнейм"
-            className="border mt-[20px] w-[40%] border-slate-950 rounded-lg pl-4 dark:bg-dkPrimaryBgC"
+            className="border mt-[20px] w-[40%] border-dkPrimaryBorderC focus:hove:active:border-dkPrimaryBorderC rounded-lg pl-4 bg-GeneralBgC dark:bg-dkGeneralBgC"
             value={userName}
             onChange={handleInputChange}
           />
@@ -77,7 +77,7 @@ export const AuthModal = () => {
         </label>
         <button
           type="submit"
-          className={`bg-black text-white my-[30px] p-2 rounded-lg cursor-pointer ${
+          className={` bg-dkSecondaryBgC text-white my-[30px] p-2 rounded-lg cursor-pointer ${
             nameValidationRule ? "opacity-100" : "opacity-30"
           }`}
           title={

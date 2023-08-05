@@ -24,7 +24,7 @@ export const OneActiveRoom = ({
 
   return (
     <div className="relative w-full p-4 flex gap-2">
-      <div className="flex justify-center items-center p-4">
+      <div className="flex justify-center items-center p-4 text-dkSecondaryTextC  border rounded-sm bg-dkSecondaryBgC dark:bg-dkGeneralBgC border-dkPrimaryBorderC">
         {name.slice(0, 2).toUpperCase()}
       </div>
 

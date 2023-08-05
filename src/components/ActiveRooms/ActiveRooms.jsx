@@ -18,7 +18,7 @@ export const ActiveRooms = ({
   const {currentRoom, setCurrentRoom} = useCurrentRoom();
   const rooms = useActiveRooms().openedRooms;
   return (
-    <div className="flex flex-col justify-between h-full text-dkPrimaryTextC">
+    <div className="flex flex-col justify-between h-full dark:text-dkPrimaryTextC">
       <div className="relative">
         {areActiveRoomsOpen && <h2 className="text-center">Активні кімнати</h2>}
         {/* {areActiveRoomsOpen && <SearchForm placeholder={"Пошук кімнат..."} />} */}
@@ -51,11 +51,11 @@ export const ActiveRooms = ({
             <div
               key={room?._id}
               onClick={() => setCurrentRoom(room)}
-              className={currentRoom._id === room?._id ? `bg-dkGeneralBgC border rounded-xl border-dkPrimaryBorderC` : ""}
+              className={`${currentRoom._id === room?._id ? ` ` : ""} flex flex-col justify-between`}
             >
               <OneActiveRoom
                 id={room?._id}
-                name={name}
+                name={room?.name}
                 amountOfActiveUsers={room?.activeUsers.length}
                 lastMessage={lastMessage}
                 areActiveRoomsOpen={areActiveRoomsOpen}

@@ -65,7 +65,7 @@ export const MessageInput = memo(() => {
   };
 
   return (
-    <div className="border flex items-center relative dark:bg-dkPrimaryBgC">
+    <div className="flex items-center relative dark:bg-dkPrimaryBgC">
       <input
         ref={inputRef}
         type="text"

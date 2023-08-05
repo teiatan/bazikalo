@@ -102,7 +102,7 @@ function App() {
       <div className="flex w-screen h-screen overflow-hidden pt-[80px]">
         <div
           className={`
-          p-4 border
+          p-4 border-r border-dkPrimaryBorderC
           ${
             areActiveRoomsOpen
               ? `w-[${openAvtiveRoomsWidth}]`
@@ -119,7 +119,7 @@ function App() {
 
         <div
           className={`
-          grid grid-rows-[80px_calc(100vh-80px-80px-160px)_160px] border
+          grid grid-rows-[80px_calc(100vh-80px-80px-160px)_160px]
           ${
             areActiveRoomsOpen
               ? `w-[calc(100vw-345px)]`

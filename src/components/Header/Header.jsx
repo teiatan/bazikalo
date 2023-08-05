@@ -18,9 +18,12 @@ const { toggleDarkMode } = useTheme();
   };
 
   return (
-    <div className="fixed w-screen h-[80px] z-10 bg-dkPrimaryTextC text-2xl dark:bg-dkGeneralBgC">
+    <div className="fixed w-screen h-[80px] z-10 bg-dkPrimaryTextC text-2xl dark:bg-dkGeneralBgC border-b border-dkPrimaryBorderC">
       <div className="h-full flex items-center justify-between m-auto">
-        <div className="w-[345px] text-center">LOGO</div>
+        <div className="w-[345px] text-center">
+          <img src="../../../public/vite.svg" alt="bazikalo logo" />
+
+        </div>
 
         <div className="mr-[100px] flex gap-[30px] relative">
          <SwitchButtonTheme />

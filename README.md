@@ -4,4 +4,4 @@
 ## Main lib
 
 [React 17](https://ru.reactjs.org/)
-[tailwindcss]()
+[tailwindcss](https://tailwindcss.com/)
